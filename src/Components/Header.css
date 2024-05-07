@@ -26,3 +26,7 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.account-wrap:hover {
+  cursor: pointer;
+}
