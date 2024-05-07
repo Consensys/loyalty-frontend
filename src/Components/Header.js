@@ -1,15 +1,17 @@
 import './Header.css';
 import Box from '@mui/material/Box';
-import Jazzicon from "./Jazzicon";
+import Button from '@mui/material/Button';
 import LogoText from '../Images/Logo-text.svg';
 import Fox from '../Images/fox.png';
-
-function shortenHexString(str) {
-    return str.slice(0, 10) + "..." + str.slice(-6);
-}
+import { useAccount, useConnect } from 'wagmi';
+import { Account } from './Account';
 
 function Header() {
-    const address = '0xc2326247DFf1e185874DC22CE7A26eFcF7FC39f3';
+    const { isConnected } = useAccount() 
+    const { connectors, connect } = useConnect()
+
+    const connector = connectors[0]
+
     return (
         <Box className="Header"  display="flex">
             <Box width={'20%'} display="flex" alignItems="center">
@@ -38,8 +40,14 @@ function Header() {
             </Box>
             <Box display="flex" alignItems="center" flex={1} justifyContent="flex-end">
                 {/* TODO: Pass in user address */}
-                <Jazzicon address={address} />
-                <div className='address-abbr'>{shortenHexString(address)}</div>
+                {isConnected ? (
+                    <Account />
+                ) : (
+                    <Button
+                        variant="contained"
+                        onClick={() => connect({ connector })}
+                    >Connect</Button>
+                )}
             </Box>
         </Box>
     );
