@@ -1,0 +1,22 @@
+.Header {
+  background-color: #242628;
+  height: 80px;
+  padding: 0 30px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+
+.fox {
+  padding-right: 10px;
+}
+
+.header-item:hover{
+  color: #0376C9;
+  cursor: pointer;
+}
+
+.address-abbr {
+  margin-left: 10px;
+}
