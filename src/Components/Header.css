@@ -8,6 +8,11 @@
   line-height: 24px; /* 150% */
 }
 
+a:-webkit-any-link {
+  color: inherit;
+  text-decoration: none;
+}
+
 .fox {
   padding-right: 10px;
 }
