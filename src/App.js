@@ -13,14 +13,14 @@ function App() {
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}> 
         <div className="App">
-            <Header />
-            <div style={{ height: '50px'}} />
-            <Stamp
-                points={8}
-                title="Ownership verification"
-                subtitle="Verify ownership of the smart contract address."
-            />
-            <LoadingCircle />
+          <Header />
+          <div style={{ height: '50px'}} />
+          <Stamp
+              points={8}
+              title="Ownership verification"
+              subtitle="Verify ownership of the smart contract address."
+          />
+          <LoadingCircle />
         </div>
       </QueryClientProvider>
     </WagmiProvider>
