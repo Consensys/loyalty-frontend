@@ -20,3 +20,9 @@
 .address-abbr {
   margin-left: 10px;
 }
+
+.account-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
