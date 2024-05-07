@@ -14,7 +14,7 @@ function Header() {
     const connector = connectors[0]
 
     return (
-        <Box className="Header"  display="flex">
+        <Box className="Header"  display="flex" style={{ backgroundColor: '#24272A'}}>
             <Box width={'20%'} display="flex" alignItems="center">
                 <img src={Fox} className="fox"/>
                 <img src={LogoText} />
