@@ -5,6 +5,7 @@ import LogoText from '../Images/Logo-text.svg';
 import Fox from '../Images/fox.png';
 import { useAccount, useConnect } from 'wagmi';
 import { Account } from './Account';
+import { Link } from 'react-router-dom';
 
 function Header() {
     const { isConnected } = useAccount() 
@@ -20,22 +21,22 @@ function Header() {
             </Box>
             <Box display="flex" justifyContent="space-around" width={'50%'}>
                 <Box className="header-item" display="flex" alignItems="center" >
-                    Dashboard
+                    <Link to="/">Dashboard</Link>
                 </Box>
                 <Box className="header-item" display="flex" alignItems="center" >
-                    Activity
+                    <Link to="/activity" >Activity</Link>
                 </Box>
                 <Box className="header-item" display="flex" alignItems="center" >
-                    Earn
+                    <Link to="/earn" >Earn</Link>
                 </Box>
                 <Box className="header-item" display="flex" alignItems="center" >
-                    Redeem
+                    <Link to="/redeem" >Redeem</Link>
                 </Box>
                 <Box className="header-item" display="flex" alignItems="center" >
-                    Benefits
+                    <Link to="/benefits" >Benefits</Link>
                 </Box>
                 <Box className="header-item" display="flex" alignItems="center" >
-                    Support
+                    <Link to="/support" >Support</Link>
                 </Box>
             </Box>
             <Box display="flex" alignItems="center" flex={1} justifyContent="flex-end">
