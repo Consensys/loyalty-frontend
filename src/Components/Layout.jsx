@@ -19,7 +19,9 @@ export default function Layout() {
       <div style={{ borderBottom: '1px solid #777', padding: '0 48px' }}>
         <h1 style={{ color: 'white' }}>{getTitle(match.pathname) || 'Dashboard'}</h1>
       </div>
-      <Outlet />
+      <div className="content" style={{ padding: '32px 24px' }}>
+        <Outlet />
+      </div>
     </div>
   )
 }
