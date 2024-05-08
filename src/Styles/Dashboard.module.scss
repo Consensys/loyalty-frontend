@@ -57,14 +57,14 @@
   }
 }
 
-.mid-text {}
+.midText {}
 
-.card-row {
+.cardRow {
   display: flex;
   flex-direction: row;
   gap: 1rem;
 
-  .card-wrap {
+  .cardWrap {
     flex: 1;
   }
 }

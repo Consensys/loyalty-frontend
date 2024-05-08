@@ -17,21 +17,21 @@ a:-webkit-any-link {
   padding-right: 10px;
 }
 
-.header-item:hover{
+.headerItem:hover{
   color: #0376C9;
   cursor: pointer;
 }
 
-.address-abbr {
+.addressAbbr {
   margin-left: 10px;
 }
 
-.account-wrap {
+.accountWrap {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.account-wrap:hover {
+.accountWrap:hover {
   cursor: pointer;
 }
