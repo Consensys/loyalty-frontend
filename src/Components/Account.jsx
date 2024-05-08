@@ -1,9 +1,6 @@
 import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
 import Jazzicon from './Jazzicon'
-
-function shortenHexString(str) {
-  return str.slice(0, 10) + "..." + str.slice(-6);
-}
+import { shortenHexString } from '../utils'
 
 export function Account() {
   const { address } = useAccount()

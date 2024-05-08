@@ -1,23 +1,19 @@
 .Stamp {
   display: flex;
   height: 306px;
-  padding: 32px;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  border-radius: 7.978px;
-  border: 1px solid #BBC0C566;
-  background: #24272A;
 }
 
-.first-row {
+.firstRow {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
 }
 
-.claim-points-wrapper {
+.claimPointsWrapper {
   display: flex;
   padding: 2px 8px;
   justify-content: center;
@@ -50,13 +46,13 @@
   line-height: 24px; /* 150% */
 }
 
-.button-wrapper {
+.buttonsWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   
-  .button-submit {
+  .buttonSubmit {
     display: flex;
     padding: 0px 16px;
     justify-content: center;

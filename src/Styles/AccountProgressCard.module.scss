@@ -1,0 +1,76 @@
+.accountProgressCard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .currentLevel {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    flex: 5;
+
+    .card {
+      height: 178px;
+    }
+
+    .levelInfo {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+      padding: 1rem 2rem .4rem 0;
+      border-right: 1px solid #848C96;
+
+      .title {
+        flex-direction: row;
+
+        img {
+          margin-right: .5rem;
+        }
+      }
+  
+      .labels {
+        flex-direction: row;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h3 {
+
+        }
+      }
+      .progressBar {
+
+      }
+      .address {
+
+      }
+    }
+  }
+  .nextLevel {
+    flex: 3;
+    flex-direction: column;
+    justify-content: flex-start;
+    display: flex;
+    padding: 0 2rem 0 2rem;
+    
+    .top {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+      img {
+        margin-right: .6rem;
+      }
+      .title {
+  
+      }
+
+
+      .unlockText {
+        color: #1098FC;
+      }
+    }
+
+  }
+}
