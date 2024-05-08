@@ -14,7 +14,7 @@ export default function Layout() {
   console.log(location, match)
 
   return (
-    <div className="App" style={{ backgroundColor: '#141618' }}>
+    <div className="App">
       <Header />
       <div style={{ borderBottom: '1px solid #777', padding: '0 48px' }}>
         <h1 style={{ color: 'white' }}>{getTitle(match.pathname) || 'Dashboard'}</h1>
