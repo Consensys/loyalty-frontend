@@ -15,6 +15,20 @@ const Dashboard = () => {
           Mint Your Membership NFT
         </button>
       </div>
+      <div className="cards">
+        <img src="/images/card-1.png"
+          style={{ zIndex: 101, left: 270, position: 'relative' }}
+        />
+        <img src="/images/card-2.png"
+          style={{ zIndex: 102, left: 180, position: 'relative' }}
+        />
+        <img src="/images/card-3.png"
+          style={{ zIndex: 103, left: 90, position: 'relative' }}
+        />
+        <img src="/images/card-4.png"
+          style={{ zIndex: 104, position: 'relative' }}
+        />
+      </div>
     </div>
   )
 }
