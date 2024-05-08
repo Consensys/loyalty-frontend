@@ -12,7 +12,7 @@ const Dashboard = () => {
           <p><span className="number">3</span>Mint your membership NFT.</p>
         </ul>
         <button className='button' onClick={null}>
-          Mint Your Membership NFT
+         Join the Build for MetaMask Program Now!
         </button>
       </div>
       <div className="cards">
