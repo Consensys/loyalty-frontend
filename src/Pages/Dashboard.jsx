@@ -1,5 +1,4 @@
-import { Button } from '@mui/material'
-import '../Styles/Dashboard.css'
+import '../Styles/Dashboard.scss'
 
 const Dashboard = () => {
   return (
