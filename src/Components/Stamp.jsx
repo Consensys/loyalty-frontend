@@ -1,4 +1,4 @@
-import './Stamp.scss';
+import '../Styles/Stamp.scss';
 import Solar from "../Images/Solar.svg";
 
 function Stamp({ points, title, subtitle, buttonText }) {
