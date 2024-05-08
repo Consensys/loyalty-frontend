@@ -11,8 +11,6 @@ export default function Layout() {
   const location = useLocation()
   const match = useMatch(location.pathname)
 
-  console.log(location, match)
-
   return (
     <div className="App">
       <Header />

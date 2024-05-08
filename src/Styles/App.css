@@ -9,3 +9,10 @@
   background-color: #242628;
   height: 80px;
 }
+
+.Stamp {
+  padding: 32px;
+  border-radius: 7.978px;
+  border: 1px solid #BBC0C566;
+  background: #24272A;  
+}
