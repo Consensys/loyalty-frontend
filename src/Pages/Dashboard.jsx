@@ -1,11 +1,20 @@
+import { useAccount } from 'wagmi'
 import DashboardHero from '../Components/DashboardHero'
 import Stamp from '../Components/Stamp'
 import '../Styles/Dashboard.scss'
+import DashboardAccountInfo from '../Components/DashboardAccountInfo'
 
 const Dashboard = () => {
+  const { isConnected } = useAccount()
+
+  console.log('useAccount()', useAccount())
   return (
     <>
-      <DashboardHero />
+      {isConnected ? (
+        <DashboardAccountInfo />
+      ) : (
+        <DashboardHero />
+      )}
       <div className="mid-text">
         <h2>Collect Achievement Stamps to gain XPs and Level Up</h2>
         <p>Prove compliance with different achievement criteria of the program to gain XPs and level up,<br />unlocking new opportunities and benefits as you advance.</p>
