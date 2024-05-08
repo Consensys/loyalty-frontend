@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAccount } from 'wagmi'
-import '../Styles/AccountInfoCard.scss'
+import styles from '../Styles/AccountInfoCard.module.scss'
 import { shortenHexString } from '../utils';
 
 const AccountInfoCard = () => {
@@ -8,9 +8,9 @@ const AccountInfoCard = () => {
   // Your component logic goes here
 
   return (
-    <div className="account-info-card Stamp">
+    <div className={`${styles.accountInfoCard} Stamp`}>
       <h3>Uniswap</h3>
-      <div className="basic-info">
+      <div className={styles.basicInfo}>
         <span>{shortenHexString(address)}</span>
         <span>https://myapp.eth</span>
       </div>
