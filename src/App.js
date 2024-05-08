@@ -1,5 +1,3 @@
-import Stamp from "./Components/Stamp";
-import LoadingCircle from "./Components/Loader";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi' 
@@ -37,12 +35,6 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
-          {/* <Stamp
-              points={8}
-              title="Ownership verification"
-              subtitle="Verify ownership of the smart contract address."
-          />
-          <LoadingCircle /> */}
       </QueryClientProvider>
     </WagmiProvider>
   );
