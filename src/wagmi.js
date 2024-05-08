@@ -1,8 +1,8 @@
 import { http, createConfig } from 'wagmi'
-import { sepolia, mainnet } from 'wagmi/chains'
+import { sepolia, mainnet, lineaSepolia } from "wagmi/chains"
 import { injected, metaMask, safe } from 'wagmi/connectors'
 
-export const config = createConfig({
+export const wagmiConfig = createConfig({
   chains: [mainnet, sepolia],
   connectors: [
     injected(),
@@ -14,7 +14,8 @@ export const config = createConfig({
     }),
   ],
   transports: {
+    [lineaSepolia.id]: http(),
     [mainnet.id]: http(),
     [sepolia.id]: http(),
   },
-});
+})
