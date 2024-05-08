@@ -56,3 +56,15 @@
     width: 186px;
   }
 }
+
+.mid-text {}
+
+.card-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
+  .card-wrap {
+    flex: 1;
+  }
+}
