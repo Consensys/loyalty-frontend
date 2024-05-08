@@ -1,0 +1,16 @@
+.dashboardAccountOverview {
+  .cardsArea {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    gap: 1rem;
+  
+    .accountInfo{
+      flex: 3;
+    }
+  
+    .accountProgress {
+      flex: 5;
+    }
+  }  
+}
