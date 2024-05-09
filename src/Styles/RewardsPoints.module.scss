@@ -1,11 +1,12 @@
 .rewardsPoints {
   display: flex;
   flex-direction: row;
+  height: 120px;
 
   .availableArea {
     flex: 1;
     border-right: 1px solid #848C96;
-    padding: 1rem 2rem .4rem 0;
+    padding: 1rem 2rem 0 0;
 
     .availableHeader {
       .title {
