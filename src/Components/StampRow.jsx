@@ -4,20 +4,21 @@ import styles from '../Styles/Dashboard.module.scss'
 import ContractOwnershipForm from './ContractOwnershipForm';
 import { Dialog, DialogContent } from '@mui/material';
 
-const COMPONENTS = {
-  'ContractOwnershipForm': <ContractOwnershipForm />,
-}
 
 const StampRow = () => {
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [modalType, setModalType] = useState('');
-
-  const currentModalComponent = modalType ? COMPONENTS[modalType] : null;
-
+  
   const openModal = (type) => {
     setModalType(type);
     setModalIsVisible(true);
   }
+  
+  const COMPONENTS = {
+    'ContractOwnershipForm': <ContractOwnershipForm setIsVisible={setModalIsVisible} />,
+  }
+
+  const currentModalComponent = modalType ? COMPONENTS[modalType] : null;
 
   return (
     <>
