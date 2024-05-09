@@ -1,7 +1,9 @@
+import styles from '../Styles/Dashboard.module.scss'
+
 export const DashboardHero = () => {
   return (
-    <div className="hero" >
-    <div className="info">
+    <div className={styles.hero} >
+    <div className={styles.info}>
       <h2>Start by Proving You're a Web3 Builder</h2>
       <h3>Prove your identity to Mint your membership NFT</h3>
       <ul>
@@ -9,11 +11,11 @@ export const DashboardHero = () => {
         <p><span className="number">2</span>Verify activity on Ethereum or Linea</p>
         <p><span className="number">3</span>Mint your membership NFT.</p>
       </ul>
-      <button className='button' onClick={null}>
+      <button className={styles.button} onClick={null}>
       Join the Build for MetaMask Program Now!
       </button>
     </div>
-    <div className="cards">
+    <div className={styles.cards}>
       <img src="/images/card-1.png"
         style={{ zIndex: 101, left: 270, position: 'relative' }}
       />

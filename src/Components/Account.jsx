@@ -11,14 +11,19 @@ export function Account() {
 
   const shortAddress = shortenHexString(address)
 
+  const doDisconnect = () => {
+    console.log('doDisconnect')
+    disconnect()
+  }
+
   return (
     <div>
       {ensAvatar ? (
         <img alt="ENS Avatar" src={ensAvatar} />
       ) : (
         <div className={styles.accountWrap}>
-          <Jazzicon address={address} onClick={disconnect} />
-          {address && <div onClick={disconnect} className={styles.addressAbbr}>{ensName ? `${ensName} (${shortAddress})` : shortAddress}</div>}
+          <Jazzicon address={address} onClick={doDisconnect} />
+          {address && <div onClick={doDisconnect} className={styles.addressAbbr}>{ensName ? `${ensName} (${shortAddress})` : shortAddress}</div>}
         </div>
       )}
     </div>
