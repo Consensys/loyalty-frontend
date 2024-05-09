@@ -1,0 +1,52 @@
+.activityStats {
+  display: flex;
+  flex-direction: column;
+
+  .activityArea {
+    flex: 1;
+    padding: 1rem 2rem .4rem 0;
+
+    .statsHeader {
+      .title {
+        img {
+        }
+
+      }
+
+      .cta {
+        color: #0376C9;
+        font-size: 0.8rem;
+      }
+    }
+
+  }
+
+  .statsArea {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    justify-content: space-between;
+
+    .stat {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      flex: 1;
+  
+      .value {
+
+      }
+  
+      .unit {
+
+      }
+  
+      &:nth-child(2), &:nth-child(3) {
+        padding-left: 2rem;
+        border-left: 1px solid #848C96;
+      }
+    }    
+  }
+}

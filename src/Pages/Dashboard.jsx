@@ -3,6 +3,7 @@ import DashboardHero from '../Components/DashboardHero'
 import Stamp from '../Components/Stamp'
 import styles from '../Styles/Dashboard.module.scss'
 import DashboardAccountInfo from '../Components/DashboardAccountInfo'
+import PointsAndActivity from '../Components/PointsAndActivity'
 
 const Dashboard = () => {
   const { isConnected } = useAccount()
@@ -11,7 +12,10 @@ const Dashboard = () => {
   return (
     <>
       {isConnected ? (
-        <DashboardAccountInfo />
+        <div className={styles.accountArea}>
+          <DashboardAccountInfo />
+          <PointsAndActivity />
+        </div>
       ) : (
         <DashboardHero />
       )}
