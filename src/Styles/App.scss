@@ -41,3 +41,55 @@
 
   }
 }
+
+.modal {
+  background-color: #24272a;
+  padding-top: 0;
+  color: white;
+
+  .title {
+    text-align: left;
+  }
+
+  .instructions {
+    font-size: 0.8rem;
+  }
+
+  // Form stuff //
+  label {
+    text-align: left;
+    font-size: 0.8rem;
+  }
+
+  // input type text
+  input[type="text"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    border-radius: 10px;
+    background-color: inherit;
+    color: white;
+    outline: none;
+  }
+
+  button.small-btn {
+    margin-top: 1rem;
+    background-color: inherit;
+    color: #0376C9;
+    // reset default button styles
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    border: 1px solid #0376C9;
+    padding: 5px 2rem;
+    border-radius: 14px;
+    font-size: 0.8rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }  
+}
