@@ -1,3 +1,9 @@
+.accountArea {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .hero {
   display: flex;
   justify-content: space-between;
@@ -62,7 +68,7 @@
 .cardRow {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 2rem;
 
   .cardWrap {
     flex: 1;

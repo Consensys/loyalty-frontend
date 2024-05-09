@@ -1,0 +1,43 @@
+.App {
+  width: 100vw;
+  height: 100vh;
+  color: #C8CEDA;
+  font-family: "Euclid Circular B";
+}
+
+.Header {
+  background-color: #242628;
+  height: 80px;
+}
+
+.Stamp {
+  padding: 32px;
+  border-radius: 7.978px;
+  border: 1px solid #373737;
+  background: #24272A;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    
+    .text {
+      img {
+        margin-right: 0.6rem;
+      }
+    }
+  }
+}
+
+.stat {
+  .value {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 48px;
+  }
+
+  .unit {
+
+  }
+}
