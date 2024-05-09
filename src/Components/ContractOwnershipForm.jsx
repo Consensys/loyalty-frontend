@@ -59,8 +59,10 @@ export default function ContractOwnershipForm({ setIsVisible }) {
   const submitVerifyOwnership = async () => {
     const addressToUse = isProxy ? formData.implementationAddress : formData.contractAddress
     try {
-      await axios.post(SUBMIT_IMPLEMENTATION_URL, {
-        address: addressToUse,
+      await axios.get(SUBMIT_IMPLEMENTATION_URL, {
+        params: {
+          address: addressToUse,
+        }
       })
     } catch (error){
       console.error(error)
