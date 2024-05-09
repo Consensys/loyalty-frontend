@@ -1,12 +1,18 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
+const SUBMIT_CONTRACT_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9oqgz/'
+const SUBMIT_IMPLEMENTATION_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9bz1i/'
+const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/proxycontract'
+const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner'
+
 export default function ContractOwnershipForm({ setIsVisible }) {
   const [formData, setFormData] = useState({
     dappName: '',
-    smartContractAddress: '',
-    implementationContractAddress: ''
+    contractAddress: '',
+    implementationAddress: ''
   })
+  const [isProxy, setIsProxy] = useState(null)
 
   const onChangeInput = (key, value) => {
     setFormData({
@@ -17,9 +23,45 @@ export default function ContractOwnershipForm({ setIsVisible }) {
 
   const onSubmit = async (e) => {
     e.preventDefault()
+    if (isProxy === null) {
+      await submitIsProxy()
+      return
+    }
+    await submitVerifyOwnership()
+  }
+
+  const submitIsProxy = async () => {
     try {
-      const { data } = await axios.post()
-      setIsVisible(false)
+      await axios.get(SUBMIT_CONTRACT_URL, {
+        params: {
+          address: formData.contractAddress,
+        }
+      })
+      return new Promise((resolve, reject) => {
+        let interval = setInterval(async () => {
+          const { data: { isProxy: isContractProxy }} = await axios.get(CHECK_PROXY_URL, {
+            params: {
+              address: formData.contractAddress,
+            }
+          })
+          setIsProxy(isContractProxy)
+          clearInterval(interval)
+          resolve()
+        }, 5000)
+      })
+    } catch (error){
+      console.error(error)
+    } finally {
+      // do something
+    }    
+  }
+
+  const submitVerifyOwnership = async () => {
+    const addressToUse = isProxy ? formData.implementationAddress : formData.contractAddress
+    try {
+      await axios.post(SUBMIT_IMPLEMENTATION_URL, {
+        address: addressToUse,
+      })
     } catch (error){
       console.error(error)
     } finally {
@@ -44,14 +86,14 @@ export default function ContractOwnershipForm({ setIsVisible }) {
         type="text"
         label="Smart contract address"
         variant="outlined"
-        onChange={({ target: { value }}) => onChangeInput('dappName', value)}
+        onChange={({ target: { value }}) => onChangeInput('contractAddress', value)}
       />
       <label>Implementation contract address</label>
       <input
         type="text"
         label="Implementation contract address"
         variant="outlined"
-        onChange={({ target: { value }}) => onChangeInput('dappName', value)}
+        onChange={({ target: { value }}) => onChangeInput('implementationAddress', value)}
       />
       <button
         className="small-btn"
