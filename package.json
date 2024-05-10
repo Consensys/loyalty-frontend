@@ -1,5 +1,6 @@
 {
   "name": "loyal-ui",
+  "homepage": "https://Consensys.github.io/loyalty-ui",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -27,6 +28,9 @@
     "web-vitals": "^2.1.4",
     "web3": "^4.8.0"
   },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  },
   "scripts": {
     "start": "vite",
     "dev": "vite --port 3000",
@@ -34,7 +38,9 @@
     "_start": "react-scripts start",
     "_build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [
