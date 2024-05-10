@@ -50,15 +50,6 @@ const StampRow = () => {
         </div>
         <div className={styles.cardWrap}>
           <Stamp
-            onClick={() => openModal('ContractOwnershipForm')}
-            points={10}
-            title="Verify Smart-Contract Audit"
-            subtitle="Prove that your Dapp smart-contract has been audited."
-            buttonText='Submit proof'
-          />
-        </div>
-        <div className={styles.cardWrap}>
-          <Stamp
             points={10}
             title="Verify Smart-Contract Audit"
             subtitle="Prove that your Dapp smart-contract has been audited."
