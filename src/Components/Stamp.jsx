@@ -10,8 +10,8 @@ function Stamp({ points, title, subtitle, buttonText, onClick }) {
           <div className={styles.claimPointsContent}>+{points} XPs</div>
         </div>
       </div>
-      <div className={styles.title}>{ title }</div>
-      <div>{ subtitle }</div>
+      <div className={styles.title}>{title}</div>
+      <div>{subtitle}</div>
       <div className={styles.buttonsWrapper}>
         <button onClick={onClick} className={styles.buttonSubmit}>
             <img src="/images/lock.png" />
@@ -19,7 +19,7 @@ function Stamp({ points, title, subtitle, buttonText, onClick }) {
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 export default Stamp;
