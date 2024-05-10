@@ -72,6 +72,10 @@
     background-color: inherit;
     color: white;
     outline: none;
+
+    &[disabled] {
+      background-color: #373737;
+    }
   }
 
   button.small-btn {
