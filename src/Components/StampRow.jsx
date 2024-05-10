@@ -1,24 +1,33 @@
+
 import React, { useState } from 'react';
 import Stamp from './Stamp';
 import styles from '../Styles/Dashboard.module.scss'
 import ContractOwnershipForm from './ContractOwnershipForm';
 import { Dialog, DialogContent } from '@mui/material';
-
+import AuditVerificationForm from "./AuditVerificationForm"
 
 const StampRow = () => {
-  const [modalIsVisible, setModalIsVisible] = useState(false);
-  const [modalType, setModalType] = useState('');
-  
+  const [modalIsVisible, setModalIsVisible] = useState(false)
+  const [modalType, setModalType] = useState("")
+
   const openModal = (type) => {
-    setModalType(type);
-    setModalIsVisible(true);
-  }
-  
-  const COMPONENTS = {
-    'ContractOwnershipForm': <ContractOwnershipForm setIsVisible={setModalIsVisible} />,
+    setModalType(type)
+    setModalIsVisible(true)
   }
 
-  const currentModalComponent = modalType ? COMPONENTS[modalType] : null;
+  const COMPONENTS = {
+    ContractOwnershipForm: <ContractOwnershipForm setIsVisible={setModalIsVisible} />,
+    AuditVerificationForm: <AuditVerificationForm setIsVisible={setModalIsVisible} />,
+  }
+
+  const currentModalComponent = modalType ? COMPONENTS[modalType] : null
+
+  const [verifyAuditIsOpen, setVerifyAuditIsOpen] = useState(false)
+
+  const toggleVerifyAuditDrawer = (open) => () => {
+    setVerifyAuditIsOpen(open)
+  }
+  
 
   return (
     <>
@@ -51,6 +60,15 @@ const StampRow = () => {
         <div className={styles.cardWrap}>
           <Stamp
             points={10}
+            title="Verify Smart-Contract Audit"
+            subtitle="Prove that your Dapp smart-contract has been audited."
+            buttonText="Submit proof"
+            onClick={() => openModal("AuditVerificationForm")}
+          />
+        </div>
+        <div className={styles.cardWrap}>
+          <Stamp
+            points={10}
             title="Verify Integration of MetaMask SDK"
             subtitle="Submit proof of integration with the MetaMask SDK."
             buttonText='Submit proof'
@@ -65,7 +83,7 @@ const StampRow = () => {
           </DialogContent>
         </Dialog>
     </>
-  );
-};
+  )
+}
 
-export default StampRow;
+export default StampRow
