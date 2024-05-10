@@ -39,14 +39,19 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       })
       return new Promise((resolve, reject) => {
         let interval = setInterval(async () => {
-          const { data: { isProxy: isContractProxy }} = await axios.get(CHECK_PROXY_URL, {
-            params: {
-              address: formData.contractAddress,
-            }
-          })
-          setIsProxy(isContractProxy)
-          clearInterval(interval)
-          resolve()
+          try {
+            const { data: { isProxy: isContractProxy }} = await axios.get(CHECK_PROXY_URL, {
+              params: {
+                address: formData.contractAddress,
+              }
+            })
+            setIsProxy(isContractProxy)
+            clearInterval(interval)
+            resolve()
+          } catch (err) {
+            console.error(err)
+            reject()
+          }
         }, 5000)
       })
     } catch (error){
@@ -57,11 +62,14 @@ export default function ContractOwnershipForm({ setIsVisible }) {
   }
 
   const submitVerifyOwnership = async () => {
-    const addressToUse = isProxy ? formData.implementationAddress : formData.contractAddress
+    // const addressToUse = isProxy ? formData.implementationAddress : formData.contractAddress
+    const { contractAddress, implementationAddress } = formData
     try {
       await axios.get(SUBMIT_IMPLEMENTATION_URL, {
         params: {
-          address: addressToUse,
+          contractAddress,
+          implementationAddress
+
         }
       })
     } catch (error){
@@ -78,6 +86,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       <p className="instructions">Enter your dapp smart contract address below to start the verification process</p>
       <label>Dapp name</label>
       <input
+        disabled={false}
         type="text"
         label="Dapp name"
         variant="outlined"
@@ -85,18 +94,24 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       />
       <label>Smart contract address</label>
       <input
+        disabled={false}
         type="text"
         label="Smart contract address"
         variant="outlined"
         onChange={({ target: { value }}) => onChangeInput('contractAddress', value)}
       />
-      <label>Implementation contract address</label>
-      <input
-        type="text"
-        label="Implementation contract address"
-        variant="outlined"
-        onChange={({ target: { value }}) => onChangeInput('implementationAddress', value)}
-      />
+      {isProxy !== null && (
+        <>
+        <label>Implementation contract address</label>
+          <input
+            disabled={false}
+            type="text"
+            label="Implementation contract address"
+            variant="outlined"
+            onChange={({ target: { value }}) => onChangeInput('implementationAddress', value)}
+          />        
+        </>
+      )}
       <button
         className="small-btn"
         variant="contained"
