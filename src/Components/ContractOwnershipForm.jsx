@@ -1,10 +1,20 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { shortenHexString } from '../utils';
+import styles from '../Styles/ContractOwnershipForm.module.scss'
+
+const FETCH_CONFIG = {
+  headers: {
+    'X-API-KEY': '375262ce-c3d0-4609-a325-ec2831a071b4',
+    accept: 'application/json',
+    'ngrok-skip-browser-warning': 'skip-browser-warning'
+  }
+}
 
 const SUBMIT_CONTRACT_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9oqgz/'
 const SUBMIT_IMPLEMENTATION_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9bz1i/'
-const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/proxycontract'
-const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner'
+const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/proxy/contractaddress'
+const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
 
 export default function ContractOwnershipForm({ setIsVisible }) {
   const [formData, setFormData] = useState({
@@ -13,6 +23,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
     implementationAddress: ''
   })
   const [isProxy, setIsProxy] = useState(null)
+  const [ownerAddress, setOwnerAddress] = useState(null)
 
   const onChangeInput = (key, value) => {
     setFormData({
@@ -31,6 +42,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
   }
 
   const submitIsProxy = async () => {
+    const { contractAddress } = formData
     try {
       await axios.get(SUBMIT_CONTRACT_URL, {
         params: {
@@ -40,11 +52,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       return new Promise((resolve, reject) => {
         let interval = setInterval(async () => {
           try {
-            const { data: { isProxy: isContractProxy }} = await axios.get(CHECK_PROXY_URL, {
-              params: {
-                address: formData.contractAddress,
-              }
-            })
+            const { data: { isProxy: isContractProxy }} = await axios.get(`${CHECK_PROXY_URL}/${contractAddress}`, FETCH_CONFIG)
             setIsProxy(isContractProxy)
             clearInterval(interval)
             resolve()
@@ -62,21 +70,36 @@ export default function ContractOwnershipForm({ setIsVisible }) {
   }
 
   const submitVerifyOwnership = async () => {
-    // const addressToUse = isProxy ? formData.implementationAddress : formData.contractAddress
     const { contractAddress, implementationAddress } = formData
     try {
       await axios.get(SUBMIT_IMPLEMENTATION_URL, {
         params: {
           contractAddress,
           implementationAddress
-
         }
+      })
+      return new Promise((resolve, reject) => {
+        setInterval(async () => {
+          try {
+            const { data: { accountAddress } } = await axios.get(`${VERIFY_OWNERSHIP_URL}/${contractAddress}`, FETCH_CONFIG)
+            setOwnerAddress(accountAddress)
+            resolve()
+          } catch (err) {
+            console.error(err)
+            reject()
+          }
+        }, 5000)
       })
     } catch (error){
       console.error(error)
     } finally {
       // do something
     }
+  }
+
+  const copyToClipboard = () => {
+    console.log('copyToClipboard', ownerAddress)
+    navigator.clipboard.writeText(ownerAddress)
   }
 
   return (
@@ -94,7 +117,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       />
       <label>Smart contract address</label>
       <input
-        disabled={false}
+        disabled={isProxy}
         type="text"
         label="Smart contract address"
         variant="outlined"
@@ -111,6 +134,12 @@ export default function ContractOwnershipForm({ setIsVisible }) {
             onChange={({ target: { value }}) => onChangeInput('implementationAddress', value)}
           />        
         </>
+      )}
+      {ownerAddress && (
+        <div className={styles.ownerAddressWrap}>
+          <span>Owner address:</span><br />
+          <span>{shortenHexString(ownerAddress)} <img className={styles.copyIcon} onClick={copyToClipboard} src="/images/copy.svg" /></span>        
+        </div>
       )}
       <button
         className="small-btn"
