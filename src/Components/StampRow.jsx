@@ -50,7 +50,6 @@ const StampRow = () => {
         </div>
         <div className={styles.cardWrap}>
           <Stamp
-            onClick={() => openModal('ContractOwnershipForm')}
             points={10}
             title="Verify Integration of MetaMask SDK"
             subtitle="Submit proof of integration with the MetaMask SDK."
