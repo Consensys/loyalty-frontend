@@ -33,7 +33,6 @@ const StampRow = () => {
         </div>
         <div className={styles.cardWrap}>
           <Stamp
-            onClick={() => openModal('ContractOwnershipForm')}
             points={10}
             title="Verify Ownership of Dapp Domain"
             subtitle="Prove that your own your Dapp Domain URL."

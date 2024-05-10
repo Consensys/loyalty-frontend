@@ -66,6 +66,10 @@
     width: 100%;
     max-width: 250px;
     min-width: 120px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }  
   
   img {
