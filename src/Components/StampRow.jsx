@@ -58,7 +58,6 @@ const StampRow = () => {
           buttonText="Submit proof"
           onClick={() => openModal("AuditVerificationForm")}
         />
-        <VerifyAuditDrawer isOpen={verifyAuditIsOpen} toggleDrawer={toggleVerifyAuditDrawer} />
       </div>
       <div className={styles.cardWrap}>
         <Stamp
