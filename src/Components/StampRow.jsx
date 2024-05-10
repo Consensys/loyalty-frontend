@@ -31,45 +31,57 @@ const StampRow = () => {
 
   return (
     <>
-      <div className={styles.cardWrap}>
+        <div className={styles.cardWrap}>
         <Stamp
-          onClick={() => openModal("ContractOwnershipForm")}
+          onClick={() => openModal('ContractOwnershipForm')}
           points={10}
           title="Prover Ownership of Dapp Smart-Contract"
           subtitle="Prove that you own your Dapp Smart-Contract."
-          buttonText="Verify ownership"
+          buttonText='Verify ownership'
         />
-      </div>
-      <div className={styles.cardWrap}>
-        <Stamp
-          onClick={() => openModal("ContractOwnershipForm")}
-          points={10}
-          title="Verify Ownership of Dapp Domain"
-          subtitle="Prove that your own your Dapp Domain URL."
-          buttonText="Verify ownership"
-        />
-      </div>
-      <div className={styles.cardWrap}>
-        <Stamp
-          points={10}
-          title="Verify Smart-Contract Audit"
-          subtitle="Prove that your Dapp smart-contract has been audited."
-          buttonText="Submit proof"
-          onClick={() => openModal("AuditVerificationForm")}
-        />
-      </div>
-      <div className={styles.cardWrap}>
-        <Stamp
-          onClick={() => openModal("ContractOwnershipForm")}
-          points={10}
-          title="Verify Integration of MetaMask SDK"
-          subtitle="Submit proof of integration with the MetaMask SDK."
-          buttonText="Submit proof"
-        />
-      </div>
-      <Dialog open={modalIsVisible} onClose={() => setModalIsVisible(false)}>
-        <DialogContent className="modal">{currentModalComponent}</DialogContent>
-      </Dialog>
+        </div>
+        <div className={styles.cardWrap}>
+          <Stamp
+            points={10}
+            title="Verify Ownership of Dapp Domain"
+            subtitle="Prove that your own your Dapp Domain URL."
+            buttonText='Verify ownership'
+          />
+        </div>
+        <div className={styles.cardWrap}>
+          <Stamp
+            onClick={() => openModal('ContractOwnershipForm')}
+            points={10}
+            title="Verify Smart-Contract Audit"
+            subtitle="Prove that your Dapp smart-contract has been audited."
+            buttonText='Submit proof'
+          />
+        </div>
+        <div className={styles.cardWrap}>
+          <Stamp
+            points={10}
+            title="Verify Smart-Contract Audit"
+            subtitle="Prove that your Dapp smart-contract has been audited."
+            buttonText="Submit proof"
+            onClick={() => openModal("AuditVerificationForm")}
+          />
+        </div>
+        <div className={styles.cardWrap}>
+          <Stamp
+            points={10}
+            title="Verify Integration of MetaMask SDK"
+            subtitle="Submit proof of integration with the MetaMask SDK."
+            buttonText='Submit proof'
+          />
+        </div>
+        <Dialog
+          open={modalIsVisible}
+          onClose={() => setModalIsVisible(false)}
+        >
+          <DialogContent className="modal">
+            {currentModalComponent}
+          </DialogContent>
+        </Dialog>
     </>
   )
 }
