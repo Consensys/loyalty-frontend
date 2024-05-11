@@ -74,6 +74,11 @@
     color: white;
     outline: none;
 
+    // disabled text input cursor style
+    &[disabled] {
+      cursor: not-allowed;
+    }
+
     &[disabled] {
       background-color: #373737;
     }

@@ -16,8 +16,10 @@ const SUBMIT_CONTRACT_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9oqg
 const SUBMIT_IMPLEMENTATION_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9bz1i/'
 // const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/proxy/contractaddress'
 // const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
-const CHECK_PROXY_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/proxy/contractaddress'
-const VERIFY_OWNERSHIP_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/contractowner/contractaddress'
+// const CHECK_PROXY_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/proxy/contractaddress'
+// const VERIFY_OWNERSHIP_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/contractowner/contractaddress'
+const CHECK_PROXY_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/zapier/proxy/contractaddress'
+const VERIFY_OWNERSHIP_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/zapier/contractowner/contractaddress'
 
 export default function ContractOwnershipForm({ setIsVisible }) {
   const [isProcessing, setIsProcessing] = useState(false)
@@ -69,27 +71,28 @@ export default function ContractOwnershipForm({ setIsVisible }) {
             if (isContractProxy) {
               implementationAddressRef.current.focus()
             }
-            clearInterval(interval)
-            resolve()
+            if (typeof isContractProxy === 'boolean') {
+              clearInterval(interval)
+              resolve()
+              setIsProcessing(false)
+            }
           } catch (err) {
             console.error(err)
             clearInterval(interval)
             reject()
-          }
-          finally {
             setIsProcessing(false)
           }
         }, 2000)
       })
     } catch (error){
       console.error(error)
-    } finally {
       setIsProcessing(false)
-    }    
+    }
   }
 
   const submitVerifyOwnership = async () => {
     const { contractAddress, implementationAddress } = formData
+    setIsProcessing(true)
     try {
       await axios.get(SUBMIT_IMPLEMENTATION_URL, {
         params: {
@@ -98,21 +101,29 @@ export default function ContractOwnershipForm({ setIsVisible }) {
         }
       })
       return new Promise((resolve, reject) => {
-        setInterval(async () => {
+        const interval = setInterval(async () => {
           try {
-            const { data: { accountAddress } } = await axios.get(`${VERIFY_OWNERSHIP_URL}/${contractAddress}`, FETCH_CONFIG)
-            setOwnerAddress(accountAddress)
-            resolve()
+            const { data: { accountAddress } } = await axios.get(
+              `${VERIFY_OWNERSHIP_URL}/${contractAddress}`,
+              FETCH_CONFIG
+            )
+            if (accountAddress) {
+              clearInterval(interval)
+              resolve()
+              setIsProcessing(false)
+              setOwnerAddress(accountAddress)
+            }
           } catch (err) {
             console.error(err)
+            clearInterval(interval)
+            setIsProcessing(false)
             reject()
           }
-        }, 5000)
+        }, 2000)
       })
     } catch (error){
       console.error(error)
-    } finally {
-      // do something
+      setIsProcessing(false)
     }
   }
 
@@ -139,7 +150,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       <label>Smart contract address</label>
         <input
           className={`${isProxy && 'success'}`}
-          disabled={isProxy}
+          disabled={isProxy || isProcessing}
           value={formData.contractAddress}
           type="text"
           label="Smart contract address"
@@ -148,21 +159,28 @@ export default function ContractOwnershipForm({ setIsVisible }) {
         /><br />
         {isProxy && (
           <>
-            <label className='result success'>✓ Address registered!</label>
+            <label className='result success'>✓ Contract address registered!</label>
             <br />
           </>
         )}
         <div className={`${[null, false].includes(isProxy) && 'hidden'}`}>
           <label>Implementation contract address</label>
           <input
+            className={`${ownerAddress && 'success'}`}
             ref={implementationAddressRef}
             value={formData.implementationAddress}
-            disabled={false}
+            disabled={isProcessing || ownerAddress}
             type="text"
             label="Implementation contract address"
             variant="outlined"
             onChange={({ target: { value }}) => onChangeInput('implementationAddress', value)}
-          />
+          /><br />
+          {ownerAddress && (
+            <>
+              <label className='result success'>✓ Owner address acquired</label>
+              <br />
+            </>
+          )}          
         </div>
       {ownerAddress && (
         <div className={styles.ownerAddressWrap}>
