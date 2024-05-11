@@ -7,7 +7,7 @@ import { shortenHexString } from '../utils';
 import axios from 'axios'
 import { FETCH_CONFIG } from '../constants';
 
-const LEVEL_URL = 'http://f3ae-109-255-0-100.ngrok-free.app/v1/user/level'
+const LEVEL_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/user/level'
 
 const JoinButton = () => {
   return (
