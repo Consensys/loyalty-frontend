@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useState, createRef, useEffect } from 'react';
-import { shortenHexString } from '../utils';
-import styles from '../Styles/ContractOwnershipForm.module.scss'
 import SmallButton from './SmallButton';
+import { useSignMessage } from 'wagmi'
 
 const FETCH_CONFIG = {
   headers: {
@@ -20,8 +19,13 @@ const SUBMIT_IMPLEMENTATION_URL = 'https://hooks.zapier.com/hooks/catch/9914807/
 // const VERIFY_OWNERSHIP_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/contractowner/contractaddress'
 const CHECK_PROXY_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/zapier/proxy/contractaddress'
 const VERIFY_OWNERSHIP_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/zapier/contractowner/contractaddress'
+const ARB_DATA_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/owners'
+const VERIFY_MESSAGE_SIGNATURE_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/owners'
 
 export default function ContractOwnershipForm({ setIsVisible }) {
+  const { data: signedMessageData, error, isLoading, signMessage, variables } = useSignMessage()
+  const [message, setMessage] = useState(null)
+  // const [recoveredAddress, setRecoveredAddress] = useState(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const implementationAddressRef = createRef()
   const appNameRef = createRef()
@@ -38,6 +42,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
     appNameRef.current.focus()
   }, [])
 
+
   const onChangeInput = (key, value) => {
     setFormData({
       ...formData,
@@ -50,8 +55,11 @@ export default function ContractOwnershipForm({ setIsVisible }) {
     if (isProxy === null) {
       await submitIsProxy()
       return
+    } // todo what if not proxy?
+    if (!ownerAddress) {
+      await submitVerifyOwnership()
+      return
     }
-    await submitVerifyOwnership()
   }
 
   const submitIsProxy = async () => {
@@ -112,6 +120,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
               resolve()
               setIsProcessing(false)
               setOwnerAddress(accountAddress)
+              attemptSignMessage(accountAddress)
             }
           } catch (err) {
             console.error(err)
@@ -127,10 +136,36 @@ export default function ContractOwnershipForm({ setIsVisible }) {
     }
   }
 
-  const copyToClipboard = () => {
-    console.log('copyToClipboard', ownerAddress)
-    navigator.clipboard.writeText(ownerAddress)
+  const attemptSignMessage = async (contractOwnerAddress) => {
+    try {
+      const { data: { message } } = await axios.get(
+      `${ARB_DATA_URL}/${contractOwnerAddress}/message`,
+      FETCH_CONFIG)
+      setMessage(message)
+      await signMessage({ message })
+    } catch (err) {
+      console.error(err)
+    }
   }
+
+  console.log('signedMessageData', signedMessageData)
+
+  useEffect(() => {
+    ;(async () => {
+      console.log('in useEffect and ownerAddress is', ownerAddress)
+      if (!ownerAddress || !signedMessageData) return
+      try {
+        const { data: { status } } = await axios.post(`${VERIFY_MESSAGE_SIGNATURE_URL}/${ownerAddress}/verify`, {
+          signature: signedMessageData,
+          message
+        },
+        FETCH_CONFIG
+        )
+      } catch (err) {
+        console.error(err)
+      }
+    })()
+  }, [signedMessageData, ownerAddress, variables?.message])
 
   return (
     <form style={{ width: 300}} onSubmit={onSubmit}>
@@ -183,12 +218,18 @@ export default function ContractOwnershipForm({ setIsVisible }) {
           )}          
         </div>
       {ownerAddress && (
-        <div className={styles.ownerAddressWrap}>
-          <span>Owner address:</span><br />
-          <span>{shortenHexString(ownerAddress)} <img className={styles.copyIcon} onClick={copyToClipboard} src="/images/copy.svg" /></span>        
-        </div>
+        <SmallButton text="Verify Ownership" disabled={isProcessing} isProcessing={isProcessing} />  
       )}
-      <SmallButton text="Submit" isProcessing={isProcessing} />
+      {!ownerAddress && (
+        <SmallButton text="Register" disabled={isProcessing} isProcessing={isProcessing} />
+      )}<br /><br />
+      {/* {recoveredAddress} */}
+
+      {/* {true ? (
+        <label className='result success' style={{ float: 'left'}}>✓ Ownership verified</label>
+      ) : (
+        <label className='result error' style={{ float: 'left'}}>x Ownership verification failed, please try signing from a different wallet address</label>
+      )} */}
     </form>
   );
 }
