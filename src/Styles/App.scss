@@ -63,6 +63,7 @@
 
   // input type text
   input[type="text"] {
+    display: inline;
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -75,6 +76,21 @@
 
     &[disabled] {
       background-color: #373737;
+    }
+
+    &.success {
+      border-color: green;
+    }
+
+  }
+  label.result {
+    float: right;
+
+    &.success {
+      color: green;
+    }
+    &.error {
+      color: red;
     }
   }
 
@@ -96,4 +112,8 @@
       cursor: pointer;
     }
   }  
+}
+
+.hidden {
+  display: none;
 }
