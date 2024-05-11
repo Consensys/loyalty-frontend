@@ -161,6 +161,11 @@ export default function ContractOwnershipForm({ setIsVisible }) {
         },
         FETCH_CONFIG
         )
+        if (status === 200) {
+
+        } else {
+          console.error('Signature verification failed')
+        }
       } catch (err) {
         console.error(err)
       }
@@ -218,7 +223,10 @@ export default function ContractOwnershipForm({ setIsVisible }) {
           )}          
         </div>
       {ownerAddress && (
-        <SmallButton text="Verify Ownership" disabled={isProcessing} isProcessing={isProcessing} />  
+        <>
+          <SmallButton text="Verify Ownership" disabled={isProcessing} isProcessing={isProcessing} /><br />
+          <SmallButton text="Verify with Test Address" disabled={isProcessing} isProcessing={isProcessing} />        
+        </>
       )}
       {!ownerAddress && (
         <SmallButton text="Register" disabled={isProcessing} isProcessing={isProcessing} />
