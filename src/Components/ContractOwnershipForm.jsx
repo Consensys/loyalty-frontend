@@ -2,14 +2,8 @@ import axios from 'axios';
 import React, { useState, createRef, useEffect } from 'react';
 import SmallButton from './SmallButton';
 import { useSignMessage } from 'wagmi'
+import { FETCH_CONFIG } from '../constants';
 
-const FETCH_CONFIG = {
-  headers: {
-    'X-API-KEY': '375262ce-c3d0-4609-a325-ec2831a071b4',
-    accept: 'application/json',
-    'ngrok-skip-browser-warning': 'skip-browser-warning'
-  }
-}
 // harmless-cuddly-mullet.ngrok-free.app
 const SUBMIT_CONTRACT_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9oqgz/'
 const SUBMIT_IMPLEMENTATION_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9bz1i/'

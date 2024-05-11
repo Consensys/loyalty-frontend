@@ -1,12 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '../Styles/AccountProgressCard.module.scss'
 import { styled } from '@mui/material/styles';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { useAccount } from 'wagmi';
 import { shortenHexString } from '../utils';
+import axios from 'axios'
+import { FETCH_CONFIG } from '../constants';
+
+const LEVEL_URL = 'http://f3ae-109-255-0-100.ngrok-free.app/v1/user/level'
+
+const JoinButton = () => {
+  return (
+    <div className={`${styles.accountProgressCard} Stamp`}>
+      <button className={styles.button}>
+        Join the Build for MetaMask Program Now!
+      </button>
+    </div>
+  );
+}
 
 const AccountProgressCard = () => {
   const { address } = useAccount()
+
+  const fetchLevel = () => {
+    try {
+      const { data } = axios.get(`${LEVEL_URL}/${address}`, FETCH_CONFIG)
+      console.log('data: ', data)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchLevel()
+  } ,{})
+
   return (
     <div className={`${styles.accountProgressCard} Stamp`}>
       <div className={styles.currentLevel}>
