@@ -10,17 +10,17 @@ const FETCH_CONFIG = {
     'ngrok-skip-browser-warning': 'skip-browser-warning'
   }
 }
-
+// harmless-cuddly-mullet.ngrok-free.app
 const SUBMIT_CONTRACT_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9oqgz/'
 const SUBMIT_IMPLEMENTATION_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9bz1i/'
 // const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/proxy/contractaddress'
 // const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
 // const CHECK_PROXY_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/proxy/contractaddress'
 // const VERIFY_OWNERSHIP_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/contractowner/contractaddress'
-const CHECK_PROXY_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/zapier/proxy/contractaddress'
-const VERIFY_OWNERSHIP_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/zapier/contractowner/contractaddress'
-const ARB_DATA_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/owners'
-const VERIFY_MESSAGE_SIGNATURE_URL = 'https://harmless-cuddly-mullet.ngrok-free.app/v1/owners'
+const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/proxy/contractaddress'
+const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
+const ARB_DATA_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/owners'
+const VERIFY_MESSAGE_SIGNATURE_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/owners'
 
 export default function ContractOwnershipForm({ setIsVisible }) {
   const { data: signedMessageData, error, isLoading, signMessage, variables } = useSignMessage()
@@ -31,9 +31,9 @@ export default function ContractOwnershipForm({ setIsVisible }) {
   const appNameRef = createRef()
   const [formData, setFormData] = useState({
     // todo - remove default values
-    dappName: 'Kylans Dapp',
-    contractAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-    implementationAddress: '0x43506849D7C04F9138D1A2050bbF3A0c054402dd'
+    dappName: '',
+    contractAddress: '',
+    implementationAddress: ''
   })
   const [isProxy, setIsProxy] = useState(null)
   const [ownerAddress, setOwnerAddress] = useState(null)
