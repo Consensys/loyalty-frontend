@@ -14,8 +14,10 @@ const FETCH_CONFIG = {
 
 const SUBMIT_CONTRACT_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9oqgz/'
 const SUBMIT_IMPLEMENTATION_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9bz1i/'
-const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/proxy/contractaddress'
-const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
+// const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/proxy/contractaddress'
+// const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
+const CHECK_PROXY_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/proxy/contractaddress'
+const VERIFY_OWNERSHIP_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/contractowner/contractaddress'
 
 export default function ContractOwnershipForm({ setIsVisible }) {
   const [isProcessing, setIsProcessing] = useState(false)
@@ -71,7 +73,11 @@ export default function ContractOwnershipForm({ setIsVisible }) {
             resolve()
           } catch (err) {
             console.error(err)
+            clearInterval(interval)
             reject()
+          }
+          finally {
+            setIsProcessing(false)
           }
         }, 2000)
       })
