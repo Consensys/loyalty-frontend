@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, createRef, useEffect } from 'react';
 import { shortenHexString } from '../utils';
 import styles from '../Styles/ContractOwnershipForm.module.scss'
+import SmallButton from './SmallButton';
 
 const FETCH_CONFIG = {
   headers: {
@@ -17,13 +18,21 @@ const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/pro
 const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
 
 export default function ContractOwnershipForm({ setIsVisible }) {
+  const [isProcessing, setIsProcessing] = useState(false)
+  const implementationAddressRef = createRef()
+  const appNameRef = createRef()
   const [formData, setFormData] = useState({
-    dappName: '',
-    contractAddress: '',
-    implementationAddress: ''
+    // todo - remove default values
+    dappName: 'Kylans Dapp',
+    contractAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    implementationAddress: '0x43506849D7C04F9138D1A2050bbF3A0c054402dd'
   })
   const [isProxy, setIsProxy] = useState(null)
   const [ownerAddress, setOwnerAddress] = useState(null)
+
+  useEffect(() => {
+    appNameRef.current.focus()
+  }, [])
 
   const onChangeInput = (key, value) => {
     setFormData({
@@ -43,6 +52,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
 
   const submitIsProxy = async () => {
     const { contractAddress } = formData
+    setIsProcessing(true)
     try {
       await axios.get(SUBMIT_CONTRACT_URL, {
         params: {
@@ -54,18 +64,21 @@ export default function ContractOwnershipForm({ setIsVisible }) {
           try {
             const { data: { isProxy: isContractProxy }} = await axios.get(`${CHECK_PROXY_URL}/${contractAddress}`, FETCH_CONFIG)
             setIsProxy(isContractProxy)
+            if (isContractProxy) {
+              implementationAddressRef.current.focus()
+            }
             clearInterval(interval)
             resolve()
           } catch (err) {
             console.error(err)
             reject()
           }
-        }, 5000)
+        }, 2000)
       })
     } catch (error){
       console.error(error)
     } finally {
-      // do something
+      setIsProcessing(false)
     }    
   }
 
@@ -109,46 +122,49 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       <p className="instructions">Enter your dapp smart contract address below to start the verification process</p>
       <label>Dapp name</label>
       <input
+        ref={appNameRef}
         disabled={false}
+        value={formData.dappName}
         type="text"
         label="Dapp name"
         variant="outlined"
         onChange={({ target: { value }}) => onChangeInput('dappName', value)}
       />
       <label>Smart contract address</label>
-      <input
-        disabled={isProxy}
-        type="text"
-        label="Smart contract address"
-        variant="outlined"
-        onChange={({ target: { value }}) => onChangeInput('contractAddress', value)}
-      />
-      {isProxy !== null && (
-        <>
-        <label>Implementation contract address</label>
+        <input
+          className={`${isProxy && 'success'}`}
+          disabled={isProxy}
+          value={formData.contractAddress}
+          type="text"
+          label="Smart contract address"
+          variant="outlined"
+          onChange={({ target: { value }}) => onChangeInput('contractAddress', value)}
+        /><br />
+        {isProxy && (
+          <>
+            <label className='result success'>✓ Address registered!</label>
+            <br />
+          </>
+        )}
+        <div className={`${[null, false].includes(isProxy) && 'hidden'}`}>
+          <label>Implementation contract address</label>
           <input
+            ref={implementationAddressRef}
+            value={formData.implementationAddress}
             disabled={false}
             type="text"
             label="Implementation contract address"
             variant="outlined"
             onChange={({ target: { value }}) => onChangeInput('implementationAddress', value)}
-          />        
-        </>
-      )}
+          />
+        </div>
       {ownerAddress && (
         <div className={styles.ownerAddressWrap}>
           <span>Owner address:</span><br />
           <span>{shortenHexString(ownerAddress)} <img className={styles.copyIcon} onClick={copyToClipboard} src="/images/copy.svg" /></span>        
         </div>
       )}
-      <button
-        className="small-btn"
-        variant="contained"
-        color="primary"
-        type="submit"
-      >
-        Register
-      </button>
+      <SmallButton text="Submit" isProcessing={isProcessing} />
     </form>
   );
 }
