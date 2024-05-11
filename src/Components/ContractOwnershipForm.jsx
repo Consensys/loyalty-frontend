@@ -174,7 +174,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
 
   return (
     <form style={{ width: 300}} onSubmit={onSubmit}>
-      <h2 className="title">Prove Ownership of<br />Dapp Smart-Contract</h2>
+      <h2 className="title">Prove Ownership of<br />Dapp Smart Contract</h2>
       <p>Prove that you own your Dapp smart contract</p>
       <p className="instructions">Enter your dapp smart contract address below to start the verification process</p>
       <label>Dapp name</label>

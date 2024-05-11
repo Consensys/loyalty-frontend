@@ -35,7 +35,7 @@ const StampRow = () => {
         <Stamp
           onClick={() => openModal('ContractOwnershipForm')}
           points={10}
-          title="Prover Ownership of Dapp Smart-Contract"
+          title="Prove Ownership of Dapp Smart-Contract"
           subtitle="Prove that you own your Dapp Smart-Contract."
           buttonText='Verify ownership'
         />
