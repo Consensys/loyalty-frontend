@@ -2,6 +2,10 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import { useMatch, useLocation } from "react-router-dom";
 
+import { useAccountStore } from "../store"
+import { useEffect } from "react"
+import { useAccount } from "wagmi"
+
 // convert path to title
 const getTitle = (path) => {
   return path.replace(/\//g, '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
@@ -10,6 +14,16 @@ const getTitle = (path) => {
 export default function Layout() {
   const location = useLocation()
   const match = useMatch(location.pathname)
+
+  const { setIsContractOwnerVerified } = useAccountStore()
+  const { address } = useAccount()
+
+  useEffect(() => {
+    if (!address) return
+    const isVerified = localStorage.getItem(`smartContractOwnership:${address}`)
+    console.log('localStorage says address is verified')
+    if (isVerified) setIsContractOwnerVerified(true)
+  } ,[address])  
 
   return (
     <div className="App">
