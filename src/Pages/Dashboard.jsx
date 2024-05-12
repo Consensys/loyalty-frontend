@@ -4,14 +4,12 @@ import styles from '../Styles/Dashboard.module.scss'
 import DashboardAccountInfo from '../Components/DashboardAccountInfo'
 import PointsAndActivity from '../Components/PointsAndActivity'
 import StampRow from '../Components/StampRow'
-import React, { useState } from "react"
+import React from "react"
 
 
 const Dashboard = () => {
   const { isConnected } = useAccount()
 
-
-  console.log("useAccount()", useAccount())
   return (
     <>
       {isConnected ? (

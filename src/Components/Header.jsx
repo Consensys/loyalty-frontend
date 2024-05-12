@@ -11,8 +11,6 @@ function Header() {
   const { isConnected } = useAccount()
   const { connectors, connect } = useConnect()
 
-  console.log('useAccount()', useAccount())
-
   const connector = connectors[0]
 
   return (
