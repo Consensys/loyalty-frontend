@@ -3,6 +3,8 @@ import React, { useState, createRef, useEffect } from 'react';
 import SmallButton from './SmallButton';
 import { useSignMessage } from 'wagmi'
 import { FETCH_CONFIG } from '../constants';
+import { useAccount } from 'wagmi';
+import { useAccountStore } from '../store';
 
 // harmless-cuddly-mullet.ngrok-free.app
 const SUBMIT_CONTRACT_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9oqgz/'
@@ -18,6 +20,8 @@ const VERIFY_MESSAGE_SIGNATURE_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/
 const CONFIRM_VALID_VERIFICATION_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/stamps/smartcontract-ownership/verify'
 
 export default function ContractOwnershipForm({ setIsVisible }) {
+  const { address } = useAccount()
+  const { setIsContractOwnerVerified } = useAccountStore()
   const { data: signedMessageData, error, isLoading, signMessage, variables } = useSignMessage()
   const [xp, setXp] = useState(0)
   const [messageToSign, setMessageToSign] = useState(null)
@@ -146,6 +150,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
   }
 
   const confirmValidVerification = async () => {
+    const { contractAddress } = formData
     try {
       const { data: { provider, xps, status } } = await axios.post(
         `${CONFIRM_VALID_VERIFICATION_URL}/${ownerAddress}`, {
@@ -157,14 +162,20 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       if (status !== 'valid') throw new Error('Invalid verification')
       if (provider === 'SmartContractOwnership') {
         setIsOwnerVerified(true)
+        setIsContractOwnerVerified(true)
         setXp(xps)
+        const dataToSave = {
+          ownerAddress,
+          contractAddress,
+          isVerified: true
+        }
+        localStorage.setItem(`smartContractOwnership:${ownerAddress}`, JSON.stringify(dataToSave))
+        localStorage.setItem(`smartContractOwnership:${ownerAddress}`, JSON.stringify(dataToSave))
       }
     } catch (err) {
       console.error(err)
     }
   }
-
-  console.log('signedMessageData', signedMessageData)
 
   useEffect(() => {
     ;(async () => {

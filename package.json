@@ -27,7 +27,8 @@
     "vite": "^5.2.11",
     "wagmi": "^2.8.1",
     "web-vitals": "^2.1.4",
-    "web3": "^4.8.0"
+    "web3": "^4.8.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "gh-pages": "^6.1.1"
