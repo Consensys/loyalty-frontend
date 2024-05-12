@@ -12,9 +12,6 @@ import Earn from "./Pages/Earn"
 import Redeem from "./Pages/Redeem"
 import Benefits from "./Pages/Benefits"
 import Support from "./Pages/Support"
-import axios from 'axios'
-
-axios.defaults.withCredentials = true;
 
 const queryClient = new QueryClient()
 
