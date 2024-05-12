@@ -15,19 +15,22 @@ const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/pro
 const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
 const ARB_DATA_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/owners'
 const VERIFY_MESSAGE_SIGNATURE_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/owners'
+const CONFIRM_VALID_VERIFICATION_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/stamps/smartcontract-ownership/verify'
 
 export default function ContractOwnershipForm({ setIsVisible }) {
   const { data: signedMessageData, error, isLoading, signMessage, variables } = useSignMessage()
-  const [message, setMessage] = useState(null)
+  const [xp, setXp] = useState(0)
+  const [messageToSign, setMessageToSign] = useState(null)
+  const [isOwnerVerified, setIsOwnerVerified] = useState(null)
   // const [recoveredAddress, setRecoveredAddress] = useState(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const implementationAddressRef = createRef()
   const appNameRef = createRef()
   const [formData, setFormData] = useState({
     // todo - remove default values
-    dappName: '',
-    contractAddress: '',
-    implementationAddress: ''
+    dappName: 'Kylans Dapp',
+    contractAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    implementationAddress: '0x43506849D7C04F9138D1A2050bbF3A0c054402dd'
   })
   const [isProxy, setIsProxy] = useState(null)
   const [ownerAddress, setOwnerAddress] = useState(null)
@@ -135,8 +138,27 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       const { data: { message } } = await axios.get(
       `${ARB_DATA_URL}/${contractOwnerAddress}/message`,
       FETCH_CONFIG)
-      setMessage(message)
+      setMessageToSign(message)
       await signMessage({ message })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const confirmValidVerification = async () => {
+    try {
+      const { data: { provider, xps, status } } = await axios.post(
+        `${CONFIRM_VALID_VERIFICATION_URL}/${ownerAddress}`, {
+          message: messageToSign,
+          signature: signedMessageData
+        },
+        FETCH_CONFIG
+      )
+      if (status !== 'valid') throw new Error('Invalid verification')
+      if (provider === 'SmartContractOwnership') {
+        setIsOwnerVerified(true)
+        setXp(xps)
+      }
     } catch (err) {
       console.error(err)
     }
@@ -149,15 +171,17 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       console.log('in useEffect and ownerAddress is', ownerAddress)
       if (!ownerAddress || !signedMessageData) return
       try {
-        const { data: { status } } = await axios.post(`${VERIFY_MESSAGE_SIGNATURE_URL}/${ownerAddress}/verify`, {
+        const { data: { message } } = await axios.post(`${VERIFY_MESSAGE_SIGNATURE_URL}/${ownerAddress}/verify`, {
           signature: signedMessageData,
-          message
+          message: messageToSign
         },
         FETCH_CONFIG
         )
-        if (status === 200) {
-
+        if (message === 'ownership verified') {
+          // setIsOwnerVerified(true)
+          confirmValidVerification()
         } else {
+          // todo add error message toast
           console.error('Signature verification failed')
         }
       } catch (err) {
@@ -216,9 +240,9 @@ export default function ContractOwnershipForm({ setIsVisible }) {
             </>
           )}          
         </div>
-      {ownerAddress && (
+      {ownerAddress && !messageToSign && (
         <>
-          <SmallButton text="Verify Ownership" disabled={isProcessing} isProcessing={isProcessing} /><br />
+          <SmallButton text="Verify Ownership" disabled={isProcessing || (!formData.implementationAddress && isProxy)} isProcessing={isProcessing} /><br />
           <SmallButton text="Verify with Test Address" disabled={isProcessing} isProcessing={isProcessing} />        
         </>
       )}
@@ -227,11 +251,11 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       )}<br /><br />
       {/* {recoveredAddress} */}
 
-      {/* {true ? (
-        <label className='result success' style={{ float: 'left'}}>✓ Ownership verified</label>
+      {isOwnerVerified !== null && (isOwnerVerified ? (
+        <label className='result success' style={{ float: 'left'}}>✓ Ownership verified and {xp} points awarded! You can now close this window.</label>
       ) : (
         <label className='result error' style={{ float: 'left'}}>x Ownership verification failed, please try signing from a different wallet address</label>
-      )} */}
+      ))}
     </form>
   );
 }
