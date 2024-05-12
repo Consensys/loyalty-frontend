@@ -25,13 +25,13 @@ const RewardsPoints = () => {
       }
     })
     const item = records.find(item => item.fields.SmartContractAddress === contractAddress)
-    console.log('item', item)
     if (item) {
       return item.fields
     }
   }
 
   const fetchRewardsPoints = async () => {
+    if (!address || !contractAddress) return
     try {
       setIsProcessing(true)
       const { data: { status } } = await axios.get(START_REWARDS_POINTS_URL, {
