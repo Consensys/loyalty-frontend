@@ -1,127 +1,94 @@
-import React, { useEffect, useState } from "react";
-import styles from "../Styles/RewardsPoints.module.scss";
-import axios from "axios";
-import { useAccount } from "wagmi";
-import { useAccountStore } from "../store";
-import { CircularProgress } from "@mui/material";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import styles from '../Styles/RewardsPoints.module.scss';
+import { useAccount } from 'wagmi';
 import { FETCH_CONFIG } from '../constants';
 
-const START_REWARDS_POINTS_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3jse00x'
-const POLL_REWARDS_POINTS_URL = 'https://api.airtable.com/v0/app8TcmDxsrrZZJtw/Buld%20For%20MetaMask'
-const CLAIM_REWARDS_POINTS_URL = (address) => `https://f3ae-109-255-0-100.ngrok-free.app/v1/points/rps/${address}/claim`
+const CLAIM_RPS_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/points/rps'
+const RPS_URL = (userAddress) => `https://api.airtable.com/v0/app8TcmDxsrrZZJtw/tblqp1bjmMllXEAvu?filterByFormula={SmartContractAddress}=%27${userAddress}%27`
+const ETHERSCAN_TXN_URL = 'https://sepolia.etherscan.io/tx/'
+const ZAPIER_CLAIMED_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3jgb6y7?contractAddress={address}&amount={amount}'
 
 const RewardsPoints = () => {
-  const { address } = useAccount()
-  const [isClaiming, setIsClaiming] = useState(false)
-  const contractAddress = useAccountStore(state => state.contractAddress)
-  const [pointsData, setPointsData] = useState({
-    "Available Balance": 0,
-    "Total Amount": 0,
-  });
-  const [isProcessing, setIsProcessing] = useState(false);
+  let { isConnected, address } = useAccount()
+  // address = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+  const [rps, setRPS] = useState(0)
+  const [claiming, setClaiming] = useState(false)
+  const [claimtxnhash, setClaimTxnHash] = useState(null)
 
-  const pollRewardsPoints = async () => {
-    const {
-      data: { records },
-    } = await axios.get(POLL_REWARDS_POINTS_URL, {
-      headers: {
-        Accept: "*/*",
-        Authorization:
-          "Bearer patBpvtowxhAUhXeA.ac023312f7f85803cc45d42d509c503ca73beba997d75dda3b39cf04073cc332",
-      },
-    });
-    const item = records.find(
-      (item) => item.fields.SmartContractAddress === contractAddress,
-    );
-    if (item) {
-      return item.fields;
-    }
-  };
-
-  const fetchRewardsPoints = async () => {
-    if (!address || !contractAddress) return;
+  const getAvailableRPS = async () => {
     try {
-      setIsProcessing(true);
-      const {
-        data: { status },
-      } = await axios.get(START_REWARDS_POINTS_URL, {
-        params: {
-          address: contractAddress,
-        },
-      });
-      if (status !== "success") {
-        throw new Error("Failed to start fetching rewards points");
-      }
+      const { data } = await axios.get(RPS_URL(address), {
+        headers: {
+          "Authorization": `Bearer patBpvtowxhAUhXeA.ac023312f7f85803cc45d42d509c503ca73beba997d75dda3b39cf04073cc332`
+        }
+      })
+      console.log(data)
 
-      let interval;
-      return new Promise((resolve, reject) => {
-        interval = setInterval(async () => {
-          try {
-            const data = await pollRewardsPoints(resolve, reject, interval);
-            if (data) {
-              setPointsData(data);
-              resolve();
-            }
-          } catch (err) {
-            console.error(err);
-            reject();
-          } finally {
-            clearInterval(interval);
-            setIsProcessing(false);
-          }
-        }, 2000);
-      });
-    } catch (err) {
-      console.error(err);
-      setIsProcessing(false);
+      setRPS(data?.records[0]?.fields['Available Balance'] || 0)
+    } catch (error) {
+      console.error('avialble-rps-error:', error)
     }
-  };
+  }
 
-  const claimAvailablePoints = async () => {
-    setIsClaiming(true)
+  const updateClaimedRPS = async () => {
     try {
-      await axios.post(CLAIM_REWARDS_POINTS_URL(address), {
-        rps: pointsData['Available Balance']
-      }, FETCH_CONFIG)
-      fetchRewardsPoints()
-    } catch (err) {
-      console.error(err)
+      const { data } = await axios.get(ZAPIER_CLAIMED_URL.replace('{address}', address).replace('{amount}', rps))
+      console.log(data)
+
+      setRPS(data?.records[0]?.fields['Available Balance'] || 0)
+    } catch (error) {
+      console.error('avialble-rps-error:', error)
+    }
+  }
+
+  const redeemRPSPoints = async () => {
+    if (!isConnected || claiming) return
+
+    try {
+      setClaiming(true)
+      const { data } = await axios.post(`${CLAIM_RPS_URL}/${address}/claim`, { rps: Number(rps) }, FETCH_CONFIG)
+      console.log(data)
+      if (data?.hash) setClaimTxnHash(data?.hash)
+      await updateClaimedRPS()
+      setRPS(0)
+    } catch (error) {
+      console.error('claim-error:', error)
     } finally {
-      setIsClaiming(false)
+      setClaiming(false)
     }
   }
 
   useEffect(() => {
-    fetchRewardsPoints();
-  }, [address, contractAddress]);
+    if (!isConnected) return
+
+    getAvailableRPS()
+  }, [isConnected])
 
   return (
     <div className={`${styles.rewardsPoints} Stamp`}>
       <div className={styles.availableArea}>
         <div className={`header ${styles.availableHeader}`}>
-          <div className={"text"}>
+          <div className={'text'}>
             <img src="/images/trophy.svg" alt="Trophy" />
             Available Reward Points
           </div>
-          <div onClick={claimAvailablePoints} className={styles.cta}>
-            {isClaiming ? (
-              <CircularProgress color="inherit" size="xs" />
-            ) : (
-              <span>Claim</span>
-            )}
-          </div>
+          {Number(rps) >= 1 ? 
+            <a href='#' className={styles.cta} onClick={redeemRPSPoints} disabled={claiming}>
+              {claiming ? 'Processing...' : 'Claim'}
+            </a> : null
+          }
+          {Number(rps) < 1 && !!claimtxnhash && <a href={ETHERSCAN_TXN_URL + claimtxnhash} className={styles.cta} target='_blank' rel="noreferrer">
+              View txn
+            </a>}
         </div>
         <div className={`stat ${styles.stat}`}>
-          {isProcessing ? (
-            <CircularProgress />
-          ) : (
-            <>
-              <span className={"value"}>
-                {pointsData?.["Available Balance"]}
-              </span>
-              <span className={"unit"}>RPS</span>
-            </>
-          )}
+          <span className={'value'}>
+            {rps}
+          </span>
+          <span className={'unit'}>
+            RPS
+          </span>
         </div>
       </div>
       <div className={styles.balanceArea}>
@@ -130,14 +97,12 @@ const RewardsPoints = () => {
           Rewards Point Balance
         </div>
         <div className={`stat ${styles.stat}`}>
-          {isProcessing ? (
-            <CircularProgress />
-          ) : (
-            <>
-              <span className={"value"}>{pointsData?.["Total Amount"]}</span>
-              <span className={"unit"}>RPS</span>
-            </>
-          )}
+          <span className={'value'}>
+            0
+          </span>
+          <span className={'unit'}>
+            RPS
+          </span>
         </div>
       </div>
     </div>
