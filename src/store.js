@@ -1,9 +1,11 @@
 import { create } from 'zustand'
-import { useShallow } from 'zustand/react/shallow'
 
 export const useAccountStore = create((set) => ({
-  isContractOwnerVerified: false,
-  setIsContractOwnerVerified: (isVerified) => set({ isContractOwnerVerified: isVerified }),
+  contractOwnership: null,
+  setContractOwnership: ({ ownerAddress, contractAddress}) => set({
+    ownerAddress,
+    contractAddress
+  }),
   // increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
   // removeAllBears: () => set({ bears: 0 }),
 }))

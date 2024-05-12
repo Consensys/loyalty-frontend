@@ -15,14 +15,14 @@ export default function Layout() {
   const location = useLocation()
   const match = useMatch(location.pathname)
 
-  const { setIsContractOwnerVerified } = useAccountStore()
+  const { setContractOwnership } = useAccountStore()
   const { address } = useAccount()
 
   useEffect(() => {
     if (!address) return
-    const isVerified = localStorage.getItem(`smartContractOwnership:${address}`)
+    const contractOwnershipData = localStorage.getItem(`smartContractOwnership:${address}`)
     console.log('localStorage says address is verified')
-    if (isVerified) setIsContractOwnerVerified(true)
+    if (contractOwnershipData) setContractOwnership(JSON.parse(contractOwnershipData))
   } ,[address])  
 
   return (
