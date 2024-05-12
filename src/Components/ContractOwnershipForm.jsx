@@ -5,6 +5,7 @@ import { useSignMessage } from 'wagmi'
 import { FETCH_CONFIG } from '../constants';
 import { useAccount } from 'wagmi';
 import { useAccountStore } from '../store';
+import { CircularProgress } from '@mui/material';
 
 // harmless-cuddly-mullet.ngrok-free.app
 const SUBMIT_CONTRACT_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9oqgz/'
@@ -77,9 +78,6 @@ export default function ContractOwnershipForm({ setIsVisible }) {
           try {
             const { data: { isProxy: isContractProxy }} = await axios.get(`${CHECK_PROXY_URL}/${contractAddress}`, FETCH_CONFIG)
             setIsProxy(isContractProxy)
-            if (isContractProxy) {
-              implementationAddressRef.current.focus()
-            }
             if (typeof isContractProxy === 'boolean') {
               clearInterval(interval)
               resolve()
@@ -162,22 +160,24 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       if (status !== 'valid') throw new Error('Invalid verification')
       if (provider === 'SmartContractOwnership') {
         setIsOwnerVerified(true)
+        setTimeout(() => {
+          setIsVisible(false)
+          setContractOwnership(dataToSave)
+        }, 3000)
         setXp(xps)
         const dataToSave = {
           ownerAddress: userAddress,
           contractAddress
         }
-        setContractOwnership(dataToSave)
         localStorage.setItem(`smartContractOwnership:${userAddress}`, JSON.stringify(dataToSave))
       }
     } catch (err) {
-      console.error(err)
+      setIsOwnerVerified(false)
     }
   }
 
   useEffect(() => {
     ;(async () => {
-      console.log('in useEffect and ownerAddress is', ownerAddress)
       if (!ownerAddress || !signedMessageData) return
       try {
         const { data: { message } } = await axios.post(`${VERIFY_MESSAGE_SIGNATURE_URL}/${ownerAddress}/verify`, {
@@ -249,17 +249,22 @@ export default function ContractOwnershipForm({ setIsVisible }) {
             </>
           )}          
         </div>
-      {ownerAddress && !messageToSign && (
+      {!ownerAddress && (
+        <SmallButton text="Continue" disabled={isProcessing} isProcessing={isProcessing} />
+      )}<br />
+      {/* {recoveredAddress} */}
+      {ownerAddress && !signedMessageData && (
         <>
-          <SmallButton text="Verify Ownership" disabled={isProcessing || (!formData.implementationAddress && isProxy)} isProcessing={isProcessing} /><br />
-          <SmallButton text="Verify with Test Address" disabled={isProcessing} isProcessing={isProcessing} />        
+          &nbsp; <CircularProgress size={12} color='inherit' />
+          <label className='result' style={{ float: 'left' }}>Please sign data with your wallet</label>
         </>
       )}
-      {!ownerAddress && (
-        <SmallButton text="Register" disabled={isProcessing} isProcessing={isProcessing} />
-      )}<br /><br />
-      {/* {recoveredAddress} */}
-
+      {isOwnerVerified === null && signedMessageData &&  (
+        <>
+          &nbsp; <CircularProgress size={12} color='inherit' />
+          <label className='result' style={{ float: 'left' }}>Confirming signature</label>
+        </>
+      )}
       {isOwnerVerified !== null && (isOwnerVerified ? (
         <label className='result success' style={{ float: 'left'}}>✓ Ownership verified and {xp} points awarded! You can now close this window.</label>
       ) : (
