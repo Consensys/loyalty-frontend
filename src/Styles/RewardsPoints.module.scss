@@ -17,6 +17,10 @@
       .cta {
         color: #0376c9;
         font-size: 0.8rem;
+
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }
