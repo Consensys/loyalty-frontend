@@ -25,6 +25,7 @@ export default function Web3BuilderVerification({ setIsVisible }) {
     event.stopPropagation();
     event.preventDefault();
   };
+
   const openVerifyGithubForm = async (event) => {
     stopEventBubbling(event);
     setIsGithubVerifyOpen(true);
@@ -37,7 +38,6 @@ export default function Web3BuilderVerification({ setIsVisible }) {
 
     const VerifyGithubAccount = async (event) => {
       stopEventBubbling(event);
-
       // try {
       //   const {
       //     data,
@@ -51,6 +51,7 @@ export default function Web3BuilderVerification({ setIsVisible }) {
       // setToastMessage("GitHub verification failed. Please try again.")
       // handleOpenToast();
       // }
+      // TODO: Only on success
       setIsGithubVerified(true);
       setIsGithubVerifyOpen(false);
     };
@@ -78,6 +79,25 @@ export default function Web3BuilderVerification({ setIsVisible }) {
         </div>
       </div>
     );
+  };
+
+  const handleVerifyEth = (event) => {
+    stopEventBubbling(event);
+    // try {
+    //   const {
+    //     data,
+    //   } = await axios.post(
+    //     'http://f3ae-109-255-0-100.ngrok-free.app/v1/stamps/eth/verify/0x95b3045f2daaA24e864D4983EA7c6CcbF5C3da1C',
+    //     FETCH_CONFIG,
+    //   );
+    //   console.log({ data })
+    //   setToastMessage("Verify Ethereum activity verification succeeded")
+    // } catch (err) {
+    // setToastMessage("Verify Ethereum activity verification failed. Please try again.")
+    // handleOpenToast();
+    // }
+    // TODO: Only on success
+    setIsEthereumVerified(true);
   };
 
   return (
@@ -124,23 +144,29 @@ export default function Web3BuilderVerification({ setIsVisible }) {
       <div className={styles.divider} />
       <div className={styles.step}>
         <div className={styles.stepWrapper}>
-          <div className={styles.stepNumber}>2</div>
+          {isEthereumVerified ? (
+            <img src={Check} className={styles.checkIcon} />
+          ) : (
+            <div className={styles.stepNumber}>2</div>
+          )}
           <div className={styles.subtitle}>Verify Ethereum activity</div>
-          {/*TODO: Change isConnected here */}
           <div
-            className={`${isConnected ? styles.verifiedLabel : styles.unVerifiedLabel}`}
+            className={`${isEthereumVerified ? styles.verifiedLabel : styles.unVerifiedLabel}`}
           >
             + 10xps
           </div>
         </div>
-        <button
-          className={`${styles.smallBtn} small-btn`}
-          variant="contained"
-          color="primary"
-          type="submit"
-        >
-          Verify
-        </button>
+        {!isEthereumVerified && (
+          <button
+            className={`${styles.smallBtn} small-btn`}
+            variant="contained"
+            color="primary"
+            type="submit"
+            onClick={handleVerifyEth}
+          >
+            Verify
+          </button>
+        )}
       </div>
       <div className={styles.divider} />
       <div className={styles.step}>
