@@ -55,11 +55,11 @@ function Header() {
         justifyContent="flex-end"
       >
         {isConnected ? (
-            <Account />
+          <Account />
         ) : (
-            <Button variant="contained" onClick={() => connect({ connector })}>
-              Connect
-            </Button>
+          <Button variant="contained" onClick={() => connect({ connector })}>
+            Connect
+          </Button>
         )}
       </Box>
     </Box>

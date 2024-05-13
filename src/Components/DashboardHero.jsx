@@ -14,7 +14,7 @@ export const DashboardHero = () => {
   // TODO: Show Drawer when not connected
   const onClickJoin = () => {
     if (!isConnected) {
-      connect({ connector })
+      connect({ connector });
     } else {
       setIsModalVisible(true);
     }

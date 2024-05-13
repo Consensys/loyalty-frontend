@@ -55,6 +55,7 @@ export default function Web3BuilderVerification({ setIsVisible }) {
           <div className={styles.subtitle}>
             Connect your Github Account to verify code contributions.
           </div>
+          {/*TODO: Change isConnected here */}
           <div
             className={`${isConnected ? styles.verifiedLabel : styles.unVerifiedLabel}`}
           >
@@ -63,7 +64,7 @@ export default function Web3BuilderVerification({ setIsVisible }) {
         </div>
 
         {isGithubVerifyOpen ? (
-            renderVerifyGithubForm()
+          renderVerifyGithubForm()
         ) : (
           <button
             className={`${styles.smallBtn} small-btn`}

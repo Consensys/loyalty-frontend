@@ -12,6 +12,7 @@ import Earn from "./Pages/Earn";
 import Redeem from "./Pages/Redeem";
 import Benefits from "./Pages/Benefits";
 import Support from "./Pages/Support";
+import { UserVerificationProvider } from "./Context/UserVerifiedStatusContext";
 
 const queryClient = new QueryClient();
 
@@ -19,24 +20,26 @@ function App() {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="activity" element={<Activity />} />
-              <Route path="auditor" element={<Auditor />} />
-              <Route path="earn" element={<Earn />} />
-              <Route path="redeem" element={<Redeem />} />
-              <Route path="benefits" element={<Benefits />} />
-              <Route path="support" element={<Support />} />
+        <UserVerificationProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="activity" element={<Activity />} />
+                <Route path="auditor" element={<Auditor />} />
+                <Route path="earn" element={<Earn />} />
+                <Route path="redeem" element={<Redeem />} />
+                <Route path="benefits" element={<Benefits />} />
+                <Route path="support" element={<Support />} />
 
-              {/* Using path="*"" means "match anything", so this route
+                {/* Using path="*"" means "match anything", so this route
                     acts like a catch-all for URLs that we don't have explicit
                     routes for. */}
-              {/* <Route path="*" element={<NoMatch />} /> */}
-            </Route>
-          </Routes>
-        </BrowserRouter>
+                {/* <Route path="*" element={<NoMatch />} /> */}
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </UserVerificationProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
