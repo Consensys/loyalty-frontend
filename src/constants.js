@@ -5,3 +5,5 @@ export const FETCH_CONFIG = {
     "ngrok-skip-browser-warning": "skip-browser-warning",
   },
 };
+
+export const API_ENDPOINT = "https://f3ae-109-255-0-100.ngrok-free.app/v1/";

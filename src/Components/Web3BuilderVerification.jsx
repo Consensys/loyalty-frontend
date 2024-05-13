@@ -1,38 +1,81 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useAccount, useConnect } from "wagmi";
+import Snackbar from "@mui/material/Snackbar";
 import styles from "../Styles/Web3BuilderVerification.module.scss";
 import Cubes from "../Images/cubes.svg";
-import { useAccount, useConnect } from "wagmi";
+import { FETCH_CONFIG, API_ENDPOINT } from "../constants";
+import { useToastHook } from "../Context/UseToastHook";
+import Close from "../Images/close.svg";
+import Check from "../Images/check.svg";
 
 export default function Web3BuilderVerification({ setIsVisible }) {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+  const { isToastOpen, handleOpenToast, handleCloseToast } = useToastHook();
+  const [toastMessage, setToastMessage] = useState("");
+
+  const [githubAccountValue, setGithubAccountValue] = useState("");
   const [isGithubVerified, setIsGithubVerified] = useState(false);
   const [isGithubVerifyOpen, setIsGithubVerifyOpen] = useState(false);
+
   const [isEthereumVerified, setIsEthereumVerified] = useState(false);
   const [isMembershipNFTMinted, setIsMembershipNFTMinted] = useState(false);
 
-  const verifyGithub = async (event) => {
+  const stopEventBubbling = (event) => {
     event.stopPropagation();
     event.preventDefault();
+  };
+  const openVerifyGithubForm = async (event) => {
+    stopEventBubbling(event);
     setIsGithubVerifyOpen(true);
   };
 
   const renderVerifyGithubForm = () => {
     const onChangeInput = (value) => {
-      console.log(value);
+      setGithubAccountValue(value);
     };
+
+    const VerifyGithubAccount = async (event) => {
+      stopEventBubbling(event);
+
+      // try {
+      //   const {
+      //     data,
+      //   } = await axios.post(
+      //     'http://f3ae-109-255-0-100.ngrok-free.app/v1/stamps/git/verify/0xc2326247DFf1e185874DC22CE7A26eFcF7FC39f3/user/dddddanica',
+      //     FETCH_CONFIG,
+      //   );
+      //   console.log({ data })
+      // setToastMessage("GitHub verification succeeded")
+      // } catch (err) {
+      // setToastMessage("GitHub verification failed. Please try again.")
+      // handleOpenToast();
+      // }
+      setIsGithubVerified(true);
+      setIsGithubVerifyOpen(false);
+    };
+
     return (
       <div>
-        <label>Github Account</label>
-        <input
-          type="text"
-          variant="outlined"
-          onChange={(event) => {
-            event.stopPropagation();
-            event.preventDefault();
-            onChangeInput(event.target.value);
-          }}
-        />
+        <label>Github Account: </label>
+        <div className={styles.githubVerifyWrapper}>
+          <input
+            type="text"
+            variant="outlined"
+            className={styles.input}
+            onChange={(event) => {
+              onChangeInput(event.target.value);
+            }}
+          />
+          <button
+            className={`${styles.smallBtn} small-btn`}
+            variant="contained"
+            color="primary"
+            onClick={VerifyGithubAccount}
+          >
+            Verify
+          </button>
+        </div>
       </div>
     );
   };
@@ -41,7 +84,7 @@ export default function Web3BuilderVerification({ setIsVisible }) {
     <form className={styles.web3BuilderVerification}>
       <div className={styles.headerWrapper}>
         <img src={Cubes} className={styles.cubesIcon} />
-        <h2 className={styles.title}>Web3 Builder Verification</h2>
+        <h2>Web3 Builder Verification</h2>
       </div>
 
       <div className={styles.step}>
@@ -51,26 +94,28 @@ export default function Web3BuilderVerification({ setIsVisible }) {
           MetaMask NFT
         </div>
         <div className={styles.stepWrapper}>
-          <div className={styles.stepNumber}>1</div>
+          {isGithubVerified ? (
+            <img src={Check} className={styles.checkIcon} />
+          ) : (
+            <div className={styles.stepNumber}>1</div>
+          )}
           <div className={styles.subtitle}>
             Connect your Github Account to verify code contributions.
           </div>
-          {/*TODO: Change isConnected here */}
           <div
-            className={`${isConnected ? styles.verifiedLabel : styles.unVerifiedLabel}`}
+            className={`${isGithubVerified ? styles.verifiedLabel : styles.unVerifiedLabel}`}
           >
             + 10xps
           </div>
         </div>
 
-        {isGithubVerifyOpen ? (
-          renderVerifyGithubForm()
-        ) : (
+        {isGithubVerifyOpen && renderVerifyGithubForm()}
+        {!isGithubVerified && !isGithubVerifyOpen && (
           <button
             className={`${styles.smallBtn} small-btn`}
             variant="contained"
             color="primary"
-            onClick={verifyGithub}
+            onClick={openVerifyGithubForm}
           >
             Verify
           </button>
@@ -81,6 +126,7 @@ export default function Web3BuilderVerification({ setIsVisible }) {
         <div className={styles.stepWrapper}>
           <div className={styles.stepNumber}>2</div>
           <div className={styles.subtitle}>Verify Ethereum activity</div>
+          {/*TODO: Change isConnected here */}
           <div
             className={`${isConnected ? styles.verifiedLabel : styles.unVerifiedLabel}`}
           >
@@ -113,6 +159,14 @@ export default function Web3BuilderVerification({ setIsVisible }) {
           Mint
         </button>
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={isToastOpen}
+        autoHideDuration={3000}
+        onClose={handleOpenToast}
+        message={toastMessage}
+        action={<img src={Close} />}
+      />
     </form>
   );
 }

@@ -4,7 +4,7 @@ import { shortenHexString } from "../utils";
 import styles from "../Styles/Header.module.scss";
 
 export function Account() {
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ name: ensName });
