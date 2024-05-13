@@ -66,10 +66,10 @@ export default function AuditVerificationForm({ setIsVisible }) {
   const onSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
-    if (isProxy === null) {
-      await submitIsProxy();
-      return;
-    }
+    // if (isProxy === null) {
+    //   await submitIsProxy();
+    //   return;
+    // }
     await submitAuditProof();
   };
 
