@@ -23,7 +23,7 @@ function App() {
         <UserVerificationProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Layout />}>
+              <Route path="/loyalty-frontend" element={<Layout />}>
                 <Route index element={<Dashboard />} />
                 <Route path="activity" element={<Activity />} />
                 <Route path="auditor" element={<Auditor />} />
@@ -32,10 +32,10 @@ function App() {
                 <Route path="benefits" element={<Benefits />} />
                 <Route path="support" element={<Support />} />
 
-                {/* Using path="*"" means "match anything", so this route
+                { /* Using path="*"" means "match anything", so this route
                     acts like a catch-all for URLs that we don't have explicit
                     routes for. */}
-                {/* <Route path="*" element={<NoMatch />} /> */}
+                <Route path="*" element={<div>Page not found</div>} />
               </Route>
             </Routes>
           </BrowserRouter>
