@@ -1,20 +1,95 @@
 .web3BuilderVerification {
-  .title {
-
+  color: white;
+  padding-top: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  .cubesIcon {
+    margin-right: 24px;
   }
 
+  .subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 24px 0;
+    flex: 1;
+  }
+
+  .stepWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .stepNumber {
+    background-color: #bbc0c5;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+  }
+
+  .divider {
+    height: 1px;
+    width: 100%;
+    background-color: #999;
+    margin: 12px 0;
+  }
   .step {
-    &:nth-child(2), &:nth-child(3) {
-      border-bottom: 1px solid #999;
-      padding-bottom: 1.2rem;
-    }
-
-    p {
-      font-size: 0.8rem;
-    }
-
     button.smallBtn {
       margin-top: 0;
+      margin-left: 36px;
+      width: 80px;
+      height: 36px;
+      border-radius: 24px;
+      background-color: transparent;
+      border-color: #1098fc;
+      font-size: 14px;
+      line-height: 22px;
+      color: #1098fc;
+      font-family: "Euclid Circular B";
+      cursor: pointer;
+
+      &:hover {
+        background-color: #1098fc;
+        color: white;
+      }
     }
   }
+
+  .unVerifiedLabel {
+    background-color: #141618;
+    color: #bbc0c5;
+    width: 62px;
+    height: 24px;
+    padding: 2px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .verifiedLabel {
+    color: #28a745;
+    background-color: rgb(40, 167, 69, 0.15);
+    width: 62px;
+    height: 24px;
+    padding: 2px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.headerWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }

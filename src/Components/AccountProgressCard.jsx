@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
-import styles from '../Styles/AccountProgressCard.module.scss'
-import { styled } from '@mui/material/styles';
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import { useAccount } from 'wagmi';
-import { shortenHexString } from '../utils';
-import axios from 'axios'
-import { FETCH_CONFIG } from '../constants';
+import React, { useEffect } from "react";
+import styles from "../Styles/AccountProgressCard.module.scss";
+import { styled } from "@mui/material/styles";
+import LinearProgress, {
+  linearProgressClasses,
+} from "@mui/material/LinearProgress";
+import { useAccount } from "wagmi";
+import { shortenHexString } from "../utils";
+import axios from "axios";
+import { FETCH_CONFIG } from "../constants";
 
-const LEVEL_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/user/level'
+const LEVEL_URL = "https://f3ae-109-255-0-100.ngrok-free.app/v1/user/level";
 
 const JoinButton = () => {
   return (
@@ -17,23 +19,23 @@ const JoinButton = () => {
       </button>
     </div>
   );
-}
+};
 
 const AccountProgressCard = () => {
-  const { address } = useAccount()
+  const { address } = useAccount();
 
   const fetchLevel = () => {
     try {
-      const { data } = axios.get(`${LEVEL_URL}/${address}`, FETCH_CONFIG)
-      console.log('data: ', data)
+      const { data } = axios.get(`${LEVEL_URL}/${address}`, FETCH_CONFIG);
+      console.log("data: ", data);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchLevel()
-  } ,{})
+    fetchLevel();
+  }, []);
 
   return (
     <div className={`${styles.accountProgressCard} Stamp`}>
@@ -49,17 +51,16 @@ const AccountProgressCard = () => {
             10 / 20 XP
           </div>
           <div className={styles.progressBar}>
-          <BorderLinearProgress variant="determinate" value={50} />
+            <BorderLinearProgress variant="determinate" value={50} />
           </div>
-          <div className={styles.address}>
-            {shortenHexString(address)}
-          </div>
+          <div className={styles.address}>{shortenHexString(address)}</div>
         </div>
       </div>
       <div className={styles.nextLevel}>
         <div className={styles.top}>
           <span className={styles.title}>
-            <img src="/images/lock.svg" />Next Level
+            <img src="/images/lock.svg" />
+            Next Level
           </span>
           <span className={styles.unlockText}>
             <a href="#">How do I unlock?</a>
@@ -73,16 +74,16 @@ const AccountProgressCard = () => {
   );
 };
 
-
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+    backgroundColor:
+      theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+    backgroundColor: theme.palette.mode === "light" ? "#1a90ff" : "#308fe8",
   },
 }));
 

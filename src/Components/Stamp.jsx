@@ -1,4 +1,4 @@
-import styles from '../Styles/Stamp.module.scss';
+import styles from "../Styles/Stamp.module.scss";
 import Solar from "../Images/Solar.svg";
 
 function Stamp({ points, title, subtitle, buttonText, onClick }) {
@@ -14,12 +14,12 @@ function Stamp({ points, title, subtitle, buttonText, onClick }) {
       <div>{subtitle}</div>
       <div className={styles.buttonsWrapper}>
         <button onClick={onClick} className={styles.buttonSubmit}>
-            <img src="/images/lock.png" />
-            <span>{buttonText}</span>
+          <img src="/images/lock.png" />
+          <span>{buttonText}</span>
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 export default Stamp;

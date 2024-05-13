@@ -19,17 +19,17 @@
       flex-direction: column;
       justify-content: space-between;
       flex: 1;
-      padding: 1rem 2rem .4rem 0;
-      border-right: 1px solid #848C96;
+      padding: 1rem 2rem 0.4rem 0;
+      border-right: 1px solid #848c96;
 
       .title {
         flex-direction: row;
 
         img {
-          margin-right: .5rem;
+          margin-right: 0.5rem;
         }
       }
-  
+
       .labels {
         flex-direction: row;
         display: flex;
@@ -37,14 +37,11 @@
         align-items: center;
 
         h3 {
-
         }
       }
       .progressBar {
-
       }
       .address {
-
       }
     }
   }
@@ -54,24 +51,21 @@
     justify-content: flex-start;
     display: flex;
     padding: 0 2rem 0 2rem;
-    
+
     .top {
       display: flex;
       flex-direction: row;
       width: 100%;
       justify-content: space-between;
       img {
-        margin-right: .6rem;
+        margin-right: 0.6rem;
       }
       .title {
-  
       }
-
 
       .unlockText {
-        color: #1098FC;
+        color: #1098fc;
       }
     }
-
   }
 }
