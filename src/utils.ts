@@ -1,4 +1,4 @@
-export const shortenHexString = (str, length = 16) => {
+export const shortenHexString = (str, length = 10) => {
   return (
     str.slice(0, Math.floor(length / 2)) +
     "..." +

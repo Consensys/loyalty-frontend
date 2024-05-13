@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   padding: 36px 24px;
-  background-color: #24272A;
+  background-color: #24272a;
   border-radius: 8px;
   color: white;
 
@@ -29,29 +29,29 @@
     padding: 0;
     font-size: 16px;
     margin-bottom: 36px;
+  }
 
-    .number {
-      font-size: 12px;
-      background-color: blue;
-      border-radius: 50%;
-      height: 16px;
-      width: 16px;
-      margin-right: 8px;
-      display: inline-block;
-      text-align: center;
-      color: black;
-    }    
+  .number {
+    font-size: 12px;
+    background-color: #1098fc;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+    text-align: center;
+    color: black;
   }
 
   button {
-    background-color: #0376C9;
+    background-color: #0376c9;
     color: black;
     width: 300px;
     height: 40px;
     border-radius: 20px;
     border: none;
     font-family: inherit;
-  
+
     &:hover {
       cursor: pointer;
     }
@@ -63,7 +63,9 @@
   }
 }
 
-.midText {}
+.midText {
+  margin-top: 32px;
+}
 
 .cardRow {
   display: flex;
@@ -73,4 +75,8 @@
   .cardWrap {
     flex: 1;
   }
+}
+
+.cubesCollection {
+  z-index: 0;
 }

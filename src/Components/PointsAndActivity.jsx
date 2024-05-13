@@ -1,7 +1,7 @@
-import React from 'react';
-import styles from '../Styles/PointsAndActivity.module.scss';
-import RewardsPoints from './RewardsPoints';
-import ActivityStats from './ActivityStats';
+import React from "react";
+import styles from "../Styles/PointsAndActivity.module.scss";
+import RewardsPoints from "./RewardsPoints";
+import ActivityStats from "./ActivityStats";
 
 const PointsAndActivity = () => {
   return (

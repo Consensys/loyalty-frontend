@@ -1,19 +1,19 @@
-import { Routes, Route, Outlet, Link } from "react-router-dom"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { WagmiProvider } from "wagmi"
-import { wagmiConfig } from "./wagmi"
-import "./Styles/App.scss"
-import Layout from "./Components/Layout"
-import { BrowserRouter } from "react-router-dom"
-import Dashboard from "./Pages/Dashboard"
-import Activity from "./Pages/Activity"
-import Auditor from "./Pages/Auditor"
-import Earn from "./Pages/Earn"
-import Redeem from "./Pages/Redeem"
-import Benefits from "./Pages/Benefits"
-import Support from "./Pages/Support"
+import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import { wagmiConfig } from "./wagmi";
+import "./Styles/App.scss";
+import Layout from "./Components/Layout";
+import { BrowserRouter } from "react-router-dom";
+import Dashboard from "./Pages/Dashboard";
+import Activity from "./Pages/Activity";
+import Auditor from "./Pages/Auditor";
+import Earn from "./Pages/Earn";
+import Redeem from "./Pages/Redeem";
+import Benefits from "./Pages/Benefits";
+import Support from "./Pages/Support";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 function App() {
   return (
@@ -39,7 +39,7 @@ function App() {
         </BrowserRouter>
       </QueryClientProvider>
     </WagmiProvider>
-  )
+  );
 }
 
-export default App
+export default App;
