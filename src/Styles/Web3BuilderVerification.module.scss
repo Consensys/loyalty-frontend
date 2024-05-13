@@ -11,7 +11,7 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
-    margin: 24px 0;
+    margin: 12px 0;
     flex: 1;
   }
 
@@ -41,6 +41,7 @@
   }
   .step {
     button.smallBtn {
+      border-style: solid;
       margin-top: 0;
       margin-left: 36px;
       width: 80px;
@@ -116,4 +117,12 @@
 
 .checkIcon {
   margin-right: 12px;
+}
+
+.finalWelldone {
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
 }
