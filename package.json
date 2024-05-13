@@ -18,6 +18,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "axios": "^1.6.8",
     "crypto": "^1.0.1",
+    "eslint": "^8.57.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.0",
@@ -31,7 +32,9 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "gh-pages": "^6.1.1"
+    "eslint-plugin-prettier": "^5.0.0",
+    "gh-pages": "^6.1.1",
+    "prettier": "3.2.5"
   },
   "scripts": {
     "start": "vite",
@@ -42,7 +45,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "prettier": "npx prettier . --write"
   },
   "eslintConfig": {
     "extends": [
