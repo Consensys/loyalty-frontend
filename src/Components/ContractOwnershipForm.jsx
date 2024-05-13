@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, createRef, useEffect } from "react";
 import SmallButton from "./SmallButton";
 import { useSignMessage } from "wagmi";
-import { FETCH_CONFIG } from "../constants";
+import { FETCH_CONFIG, API_ENDPOINT } from "../constants";
 import { useAccount } from "wagmi";
 import { useAccountStore } from "../store";
 import { CircularProgress } from "@mui/material";
@@ -16,15 +16,12 @@ const SUBMIT_IMPLEMENTATION_URL =
 // const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
 // const CHECK_PROXY_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/proxy/contractaddress'
 // const VERIFY_OWNERSHIP_URL = 'https://d2a3-2804-13c-6f3-2400-6448-cb20-d2e8-6d0b.ngrok-free.app/v1/zapier/contractowner/contractaddress'
-const CHECK_PROXY_URL =
-  "https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/proxy/contractaddress";
-const VERIFY_OWNERSHIP_URL =
-  "https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress";
-const ARB_DATA_URL = "https://f3ae-109-255-0-100.ngrok-free.app/v1/owners";
-const VERIFY_MESSAGE_SIGNATURE_URL =
-  "https://f3ae-109-255-0-100.ngrok-free.app/v1/owners";
-const CONFIRM_VALID_VERIFICATION_URL =
-  "https://f3ae-109-255-0-100.ngrok-free.app/v1/stamps/smartcontract-ownership/verify";
+
+const CHECK_PROXY_URL = `${API_ENDPOINT}zapier/proxy/contractaddress`;
+const VERIFY_OWNERSHIP_URL = `${API_ENDPOINT}zapier/contractowner/contractaddress`;
+const ARB_DATA_URL = `${API_ENDPOINT}owners`;
+const VERIFY_MESSAGE_SIGNATURE_URL = `${API_ENDPOINT}owners`;
+const CONFIRM_VALID_VERIFICATION_URL = `${API_ENDPOINT}stamps/smartcontract-ownership/verify`;
 
 export default function ContractOwnershipForm({ setIsVisible }) {
   const { address: userAddress } = useAccount();

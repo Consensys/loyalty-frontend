@@ -93,3 +93,26 @@
   flex-direction: row;
   width: 100%;
 }
+
+.input {
+  display: inline;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 1px solid #999;
+  border-radius: 10px;
+  background-color: inherit;
+  color: white;
+  outline: none;
+}
+
+.githubVerifyWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkIcon {
+  margin-right: 12px;
+}
