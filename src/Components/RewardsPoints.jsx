@@ -4,15 +4,16 @@ import axios from "axios";
 import { useAccount } from "wagmi";
 import { useAccountStore } from "../store";
 import { CircularProgress } from "@mui/material";
+import { FETCH_CONFIG } from '../constants';
 
-const START_REWARDS_POINTS_URL =
-  "https://hooks.zapier.com/hooks/catch/9914807/3jse00x";
-const POLL_REWARDS_POINTS_URL =
-  "https://api.airtable.com/v0/app8TcmDxsrrZZJtw/Buld%20For%20MetaMask";
+const START_REWARDS_POINTS_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3jse00x'
+const POLL_REWARDS_POINTS_URL = 'https://api.airtable.com/v0/app8TcmDxsrrZZJtw/Buld%20For%20MetaMask'
+const CLAIM_REWARDS_POINTS_URL = (address) => `https://f3ae-109-255-0-100.ngrok-free.app/v1/points/rps/${address}/claim`
 
 const RewardsPoints = () => {
-  const { address } = useAccount();
-  const contractAddress = useAccountStore((state) => state.contractAddress);
+  const { address } = useAccount()
+  const [isClaiming, setIsClaiming] = useState(false)
+  const contractAddress = useAccountStore(state => state.contractAddress)
   const [pointsData, setPointsData] = useState({
     "Available Balance": 0,
     "Total Amount": 0,
@@ -76,6 +77,20 @@ const RewardsPoints = () => {
     }
   };
 
+  const claimAvailablePoints = async () => {
+    setIsClaiming(true)
+    try {
+      await axios.post(CLAIM_REWARDS_POINTS_URL(address), {
+        rps: pointsData['Available Balance']
+      }, FETCH_CONFIG)
+      fetchRewardsPoints()
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setIsClaiming(false)
+    }
+  }
+
   useEffect(() => {
     fetchRewardsPoints();
   }, [address, contractAddress]);
@@ -88,7 +103,13 @@ const RewardsPoints = () => {
             <img src="/images/trophy.svg" alt="Trophy" />
             Available Reward Points
           </div>
-          <div className={styles.cta}>Claim</div>
+          <div onClick={claimAvailablePoints} className={styles.cta}>
+            {isClaiming ? (
+              <CircularProgress color="inherit" size="xs" />
+            ) : (
+              <span>Claim</span>
+            )}
+          </div>
         </div>
         <div className={`stat ${styles.stat}`}>
           {isProcessing ? (
