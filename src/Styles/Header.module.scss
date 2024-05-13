@@ -17,8 +17,8 @@ a:-webkit-any-link {
   padding-right: 10px;
 }
 
-.headerItem:hover{
-  color: #0376C9;
+.headerItem:hover {
+  color: #0376c9;
   cursor: pointer;
 }
 
@@ -34,4 +34,8 @@ a:-webkit-any-link {
 
 .accountWrap:hover {
   cursor: pointer;
+}
+
+.logout {
+  margin-left: 20px;
 }

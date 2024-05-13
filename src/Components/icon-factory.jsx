@@ -12,10 +12,7 @@ function IconFactory(jazzicon) {
   this.cache = {};
 }
 
-IconFactory.prototype.iconForAddress = function (
-  address,
-  diameter,
-) {
+IconFactory.prototype.iconForAddress = function (address, diameter) {
   return this.generateIdenticonSvg(address, diameter);
 };
 
@@ -39,9 +36,9 @@ IconFactory.prototype.generateNewIdenticon = function (address, diameter) {
 };
 
 function imageElFor(tokenMetadata = {}) {
-  const img = document.createElement('img');
+  const img = document.createElement("img");
   img.src = tokenMetadata?.iconUrl;
-  img.style.width = '100%';
+  img.style.width = "100%";
   return img;
 }
 
