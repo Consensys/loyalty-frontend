@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import React, { useEffect, useRef, useState } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const SmallButton = ({ isProcessing, text }) => {
   const ref = useRef();
@@ -7,10 +7,10 @@ const SmallButton = ({ isProcessing, text }) => {
 
   useEffect(() => {
     setWidth(ref.current.getBoundingClientRect().width);
-  }, []);
+  }, []);  
   return (
     <button
-      ref={ref}
+      ref={ref} 
       style={{ width }}
       className="small-btn"
       variant="contained"

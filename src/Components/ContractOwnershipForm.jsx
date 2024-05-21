@@ -3,10 +3,6 @@ import React, { useState, createRef, useEffect } from 'react';
 import SmallButton from './SmallButton';
 import { useSignMessage } from 'wagmi'
 import { FETCH_CONFIG } from '../constants';
-import { useAccount } from 'wagmi';
-import { useAccountStore } from '../store';
-import { CircularProgress } from '@mui/material';
-import { shortenHexString } from '../utils';
 
 // harmless-cuddly-mullet.ngrok-free.app
 const SUBMIT_CONTRACT_URL = 'https://hooks.zapier.com/hooks/catch/9914807/3j9oqgz/'
@@ -19,24 +15,19 @@ const CHECK_PROXY_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/pro
 const VERIFY_OWNERSHIP_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/zapier/contractowner/contractaddress'
 const ARB_DATA_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/owners'
 const VERIFY_MESSAGE_SIGNATURE_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/owners'
-const CONFIRM_VALID_VERIFICATION_URL = 'https://f3ae-109-255-0-100.ngrok-free.app/v1/stamps/smartcontract-ownership/verify'
 
 export default function ContractOwnershipForm({ setIsVisible }) {
-  const { address: userAddress } = useAccount()
-  const { setContractOwnership } = useAccountStore()
   const { data: signedMessageData, error, isLoading, signMessage, variables } = useSignMessage()
-  const [xp, setXp] = useState(0)
-  const [messageToSign, setMessageToSign] = useState(null)
-  const [isOwnerVerified, setIsOwnerVerified] = useState(null)
+  const [message, setMessage] = useState(null)
   // const [recoveredAddress, setRecoveredAddress] = useState(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const implementationAddressRef = createRef()
   const appNameRef = createRef()
   const [formData, setFormData] = useState({
     // todo - remove default values
-    dappName: 'Kylans Dapp',
-    contractAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-    implementationAddress: '0x43506849D7C04F9138D1A2050bbF3A0c054402dd'
+    dappName: '',
+    contractAddress: '',
+    implementationAddress: ''
   })
   const [isProxy, setIsProxy] = useState(null)
   const [ownerAddress, setOwnerAddress] = useState(null)
@@ -63,9 +54,6 @@ export default function ContractOwnershipForm({ setIsVisible }) {
       await submitVerifyOwnership()
       return
     }
-    if (ownerAddress) {
-      attemptSignMessage(ownerAddress)
-    }
   }
 
   const submitIsProxy = async () => {
@@ -82,6 +70,9 @@ export default function ContractOwnershipForm({ setIsVisible }) {
           try {
             const { data: { isProxy: isContractProxy }} = await axios.get(`${CHECK_PROXY_URL}/${contractAddress}`, FETCH_CONFIG)
             setIsProxy(isContractProxy)
+            if (isContractProxy) {
+              implementationAddressRef.current.focus()
+            }
             if (typeof isContractProxy === 'boolean') {
               clearInterval(interval)
               resolve()
@@ -123,6 +114,7 @@ export default function ContractOwnershipForm({ setIsVisible }) {
               resolve()
               setIsProcessing(false)
               setOwnerAddress(accountAddress)
+              attemptSignMessage(accountAddress)
             }
           } catch (err) {
             console.error(err)
@@ -139,67 +131,34 @@ export default function ContractOwnershipForm({ setIsVisible }) {
   }
 
   const attemptSignMessage = async (contractOwnerAddress) => {
-    setIsOwnerVerified(null)
     try {
       const { data: { message } } = await axios.get(
       `${ARB_DATA_URL}/${contractOwnerAddress}/message`,
       FETCH_CONFIG)
-      setMessageToSign(message)
+      setMessage(message)
       await signMessage({ message })
     } catch (err) {
       console.error(err)
     }
   }
 
-  const confirmValidVerification = async () => {
-    setIsProcessing(true)
-    const { contractAddress } = formData
-    try {
-      const { data: { provider, xps, status } } = await axios.post(
-        `${CONFIRM_VALID_VERIFICATION_URL}/${ownerAddress}`, {
-          message: messageToSign,
-          signature: signedMessageData
-        },
-        FETCH_CONFIG
-      )
-      if (status !== 'valid') throw new Error('Invalid verification')
-      if (provider === 'SmartContractOwnership') {
-        setIsOwnerVerified(true)
-        setTimeout(() => {
-          setIsVisible(false)
-          setContractOwnership(dataToSave)
-        }, 3000)
-        setXp(xps)
-        const dataToSave = {
-          ownerAddress: userAddress,
-          contractAddress
-        }
-        localStorage.setItem(`smartContractOwnership:${userAddress}`, JSON.stringify(dataToSave))
-      }
-    } catch (err) {
-      setIsOwnerVerified(false)
-    } finally {
-      setIsProcessing(false)
-    }
-  }
+  console.log('signedMessageData', signedMessageData)
 
   useEffect(() => {
     ;(async () => {
+      console.log('in useEffect and ownerAddress is', ownerAddress)
       if (!ownerAddress || !signedMessageData) return
       try {
-        const { data: { message } } = await axios.post(`${VERIFY_MESSAGE_SIGNATURE_URL}/${ownerAddress}/verify`, {
+        const { data: { status } } = await axios.post(`${VERIFY_MESSAGE_SIGNATURE_URL}/${ownerAddress}/verify`, {
           signature: signedMessageData,
-          message: messageToSign
+          message
         },
         FETCH_CONFIG
         )
-        if (message === 'ownership verified') {
-          // setIsOwnerVerified(true)
-          confirmValidVerification()
+        if (status === 200) {
+
         } else {
-          // todo add error message toast
           console.error('Signature verification failed')
-          setIsOwnerVerified(false)
         }
       } catch (err) {
         console.error(err)
@@ -257,30 +216,22 @@ export default function ContractOwnershipForm({ setIsVisible }) {
             </>
           )}          
         </div>
-      {!ownerAddress && (
-        <SmallButton text="Continue" disabled={isProcessing} isProcessing={isProcessing} />
-      )}<br />
-      {((ownerAddress && !signedMessageData) || (ownerAddress && signedMessageData && isOwnerVerified === false)) && (
-        <div>
-          <label className='result' style={{ float: 'left' }}>Owner address is: {shortenHexString(ownerAddress)}</label><br />
-          <SmallButton text="Verify ownership" disabled={isProcessing} isProcessing={isProcessing} /><br /><br />
-        </div>
-        // <>
-        //   &nbsp; <CircularProgress size={12} color='inherit' />
-        //   <label className='result' style={{ float: 'left' }}>Please sign data with your wallet</label>
-        // </>
-      )}
-      {isOwnerVerified === null && signedMessageData &&  (
+      {ownerAddress && (
         <>
-          &nbsp; <CircularProgress size={12} color='inherit' />
-          <label className='result' style={{ float: 'left' }}>Confirming signature</label>
+          <SmallButton text="Verify Ownership" disabled={isProcessing} isProcessing={isProcessing} /><br />
+          <SmallButton text="Verify with Test Address" disabled={isProcessing} isProcessing={isProcessing} />        
         </>
       )}
-      {isOwnerVerified !== null && (isOwnerVerified ? (
-        <label className='result success' style={{ float: 'left'}}>✓ Ownership verified and {xp} points awarded! You can now close this window.</label>
+      {!ownerAddress && (
+        <SmallButton text="Register" disabled={isProcessing} isProcessing={isProcessing} />
+      )}<br /><br />
+      {/* {recoveredAddress} */}
+
+      {/* {true ? (
+        <label className='result success' style={{ float: 'left'}}>✓ Ownership verified</label>
       ) : (
         <label className='result error' style={{ float: 'left'}}>x Ownership verification failed, please try signing from a different wallet address</label>
-      ))}
+      )} */}
     </form>
   );
 }

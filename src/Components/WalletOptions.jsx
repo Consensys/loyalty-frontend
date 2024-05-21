@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useConnect } from "wagmi";
+import { useEffect, useState } from 'react'
+import { useConnect } from 'wagmi'
 
 export function WalletOptions() {
-  const { connectors, connect } = useConnect();
+  const { connectors, connect } = useConnect()
 
   return connectors.map((connector) => (
     <WalletOption
@@ -10,22 +10,25 @@ export function WalletOptions() {
       connector={connector}
       onClick={() => connect({ connector })}
     />
-  ));
+  ))
 }
 
-function WalletOption({ connector, onClick }) {
-  const [ready, setReady] = useState(false);
+function WalletOption({
+  connector,
+  onClick,
+}) {
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    (async () => {
-      const provider = await connector.getProvider();
-      setReady(!!provider);
-    })();
-  }, [connector]);
+    ;(async () => {
+      const provider = await connector.getProvider()
+      setReady(!!provider)
+    })()
+  }, [connector])
 
   return (
     <button disabled={!ready} onClick={onClick}>
       {connector.name}
     </button>
-  );
+  )
 }

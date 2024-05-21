@@ -5,30 +5,28 @@
 
   .availableArea {
     flex: 1;
-    border-right: 1px solid #848c96;
+    border-right: 1px solid #848C96;
     padding: 1rem 2rem 0 0;
 
     .availableHeader {
       .title {
         img {
         }
+
       }
 
       .cta {
-        color: #0376c9;
+        color: #0376C9;
         font-size: 0.8rem;
-
-        &:hover {
-          cursor: pointer;
-        }
       }
     }
+
   }
 
   .balanceArea {
     flex: 1;
     padding: 1rem 0rem 0 2rem;
-
+  
     .balanceHeader {
       img {
         margin-right: 0.6rem;
@@ -39,9 +37,11 @@
   .stat {
     margin-top: 1.6rem;
     .value {
+
     }
 
     .unit {
+
     }
   }
 }

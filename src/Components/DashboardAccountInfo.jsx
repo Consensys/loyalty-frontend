@@ -1,6 +1,7 @@
-import styles from "../Styles/DashboardAccountInfo.module.scss";
-import AccountInfoCard from "./AccountInfoCard";
-import AccountProgressCard from "./AccountProgressCard";
+
+import styles from '../Styles/DashboardAccountInfo.module.scss'
+import AccountInfoCard from './AccountInfoCard'
+import AccountProgressCard from './AccountProgressCard'
 
 const DashboardAccountInfo = () => {
   return (
@@ -15,7 +16,7 @@ const DashboardAccountInfo = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardAccountInfo;
+export default DashboardAccountInfo

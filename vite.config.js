@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react"
 
 export default defineConfig({
   // depending on your application, base can also be "/"
@@ -12,6 +12,6 @@ export default defineConfig({
     port: 3000,
   },
   build: {
-    chunkSizeWarningLimit: 2000,
-  },
-});
+    chunkSizeWarningLimit: 2000,    
+  }
+})

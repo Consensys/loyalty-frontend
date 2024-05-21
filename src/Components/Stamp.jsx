@@ -1,9 +1,7 @@
-import styles from "../Styles/Stamp.module.scss";
+import styles from '../Styles/Stamp.module.scss';
 import Solar from "../Images/Solar.svg";
-import { useAccount } from 'wagmi';
 
 function Stamp({ points, title, subtitle, buttonText, onClick }) {
-  const { address } = useAccount()
   return (
     <div className={`Stamp ${styles.Stamp}`}>
       <div className={styles.firstRow}>
@@ -14,16 +12,14 @@ function Stamp({ points, title, subtitle, buttonText, onClick }) {
       </div>
       <div className={styles.title}>{title}</div>
       <div>{subtitle}</div>
-        <div className={styles.buttonsWrapper}>
-          {address && (
-            <button onClick={onClick} className={styles.buttonSubmit}>
-                <img src="/images/lock.png" />
-                <span>{buttonText}</span>
-            </button>
-          )}
-        </div>
+      <div className={styles.buttonsWrapper}>
+        <button onClick={onClick} className={styles.buttonSubmit}>
+            <img src="/images/lock.png" />
+            <span>{buttonText}</span>
+        </button>
+      </div>
     </div>
-  );
+  )
 }
 
 export default Stamp;

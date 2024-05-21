@@ -1,10 +1,10 @@
-import React from "react";
-import { useAccount } from "wagmi";
-import styles from "../Styles/AccountInfoCard.module.scss";
-import { shortenHexString } from "../utils";
+import React from 'react';
+import { useAccount } from 'wagmi'
+import styles from '../Styles/AccountInfoCard.module.scss'
+import { shortenHexString } from '../utils';
 
 const AccountInfoCard = () => {
-  const { address } = useAccount();
+  const { address } = useAccount()
   // Your component logic goes here
 
   return (

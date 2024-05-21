@@ -1,7 +1,7 @@
 .App {
   width: 100%;
   height: 100vh;
-  color: #c8ceda;
+  color: #C8CEDA;
   font-family: "Euclid Circular B";
 }
 
@@ -14,14 +14,14 @@
   padding: 32px;
   border-radius: 7.978px;
   border: 1px solid #373737;
-  background: #24272a;
+  background: #24272A;
 
   .header {
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
-
+    
     .text {
       img {
         margin-right: 0.6rem;
@@ -38,6 +38,7 @@
   }
 
   .unit {
+
   }
 }
 
@@ -85,6 +86,7 @@
     &.success {
       border-color: green;
     }
+
   }
   label.result {
     float: right;
@@ -100,13 +102,13 @@
   button.small-btn {
     margin-top: 1rem;
     background-color: inherit;
-    color: #0376c9;
+    color: #0376C9;
     // reset default button styles
     border: none;
     padding: 0;
     font: inherit;
     cursor: pointer;
-    border: 1px solid #0376c9;
+    border: 1px solid #0376C9;
     padding: 5px 2rem;
     border-radius: 14px;
     font-size: 0.8rem;
@@ -114,7 +116,7 @@
     &:hover {
       cursor: pointer;
     }
-  }
+  }  
 }
 
 .hidden {

@@ -1,6 +1,6 @@
 {
   "name": "loyal-ui",
-  "homepage": "https://Consensys.github.io/loyalty-ui",
+  "homepage": ".",
   "_test": "https://kylanhurt.github.io/loyalty-ui",
   "version": "0.1.0",
   "private": true,

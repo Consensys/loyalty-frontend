@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import jazzicon from "@metamask/jazzicon";
-import iconFactoryGenerator from "./icon-factory";
+import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import jazzicon from '@metamask/jazzicon';
+import iconFactoryGenerator from './icon-factory';
 
 const iconFactory = iconFactoryGenerator(jazzicon);
 
@@ -11,42 +11,42 @@ const iconFactory = iconFactoryGenerator(jazzicon);
  */
 
 function Jazzicon({
-  address,
-  className,
-  diameter = 32,
-  style,
-  tokenList = {},
-}) {
-  const container = useRef();
+                      address,
+                      className,
+                      diameter = 32,
+                      style,
+                      tokenList = {},
+                  }) {
+    const container = useRef();
 
-  useEffect(() => {
-    const _container = container.current;
+    useEffect(() => {
+        const _container = container.current;
 
-    // add icon
-    const imageNode = iconFactory.iconForAddress(
-      address,
-      diameter,
-      tokenList[address?.toLowerCase()],
-    );
+        // add icon
+        const imageNode = iconFactory.iconForAddress(
+            address,
+            diameter,
+            tokenList[address?.toLowerCase()],
+        );
 
-    _container?.appendChild(imageNode);
+        _container?.appendChild(imageNode);
 
-    // remove icon
-    return () => {
-      while (_container.firstChild) {
-        _container.firstChild.remove();
-      }
-    };
-  }, [address, diameter, tokenList]);
+        // remove icon
+        return () => {
+            while (_container.firstChild) {
+                _container.firstChild.remove();
+            }
+        };
+    }, [address, diameter, tokenList]);
 
-  return <div ref={container} className={className} style={style} />;
+    return <div ref={container} className={className} style={style} />;
 }
 
 Jazzicon.propTypes = {
-  /**
-   * Address used for generating random image
-   */
-  address: PropTypes.string.isRequired,
+    /**
+     * Address used for generating random image
+     */
+    address: PropTypes.string.isRequired,
 };
 
 export default Jazzicon;
